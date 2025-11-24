@@ -1,6 +1,9 @@
 <script setup>
+import About from './components/About.vue';
 import HeadSection from './components/HeadSection.vue';
 import Home from './components/Home.vue';
+import MyLanguages from './components/MyLanguages.vue';
+import MyProjects from './components/MyProjects.vue';
 import Service from './components/Service.vue';
 import Header from './layouts/Header.vue';
 
@@ -8,9 +11,16 @@ import Header from './layouts/Header.vue';
 
 <template>
   <Header />
+
   <Home />
+
   <Service />
-  <HeadSection />
+
+  <About />
+
+  <MyLanguages />
+
+  <MyProjects />
 </template>
 
 <style scoped></style>

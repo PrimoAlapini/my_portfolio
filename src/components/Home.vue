@@ -17,7 +17,7 @@
 
       <!-- Subtitle -->
       <p class="text-gray-600 max-w-md">
-       Je suis un concepteur de sites web et applications expérimenté, avec plus de 3 ans d'expérience dans le domaine, et j'ai collaboré avec diverses entreprises et startups.
+       Je suis un concepteur de sites web et applications, expérimenté avec plus de 3 ans d'expérience dans le domaine, et j'ai collaboré avec diverses entreprises et startups.
       </p>
 
       <!-- Buttons -->
