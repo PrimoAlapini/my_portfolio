@@ -1,0 +1,130 @@
+<script setup></script>
+
+<template>
+  <footer class="w-full bg-white pt-16 border-t">
+    <!-- Top Section -->
+    <div
+      class="max-w-6xl mx-auto flex px-6 md:px-12 flex-col md:flex-row justify-between gap-12"
+    >
+      <!-- Left Brand -->
+      <div class="max-w-sm">
+        <h2 class="text-3xl font-semibold mb-3">
+          Rejoignez-moi sur mes <span class="text-[#F4B400]">Réseaux Sociaux</span>
+        </h2>
+
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-12 h-12 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
+          >
+            R
+          </div>
+          <h3 class="text-xl font-semibold text-[#33663b]">Rezah</h3>
+        </div>
+
+        <p class="text-gray-500 mt-3 text-sm leading-relaxed">
+          Un projet ? Une idée ? Parlons-en. Je suis disponible pour échanger et
+          vous aider à transformer vos ambitions en réalité.
+        </p>
+
+        <!-- Social icons -->
+        <div class="flex items-center gap-4 mt-5">
+          <span
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
+            ><i class="ri-facebook-fill text-xl text-[#33663b]"></i
+          ></span>
+
+          <span
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
+            ><i class="ri-twitter-fill text-xl text-[#33663b]"></i
+          ></span>
+          <span
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
+            ><i class="ri-instagram-line text-xl text-[#33663b]"></i
+          ></span>
+
+          <span
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
+            ><i class="ri-linkedin-fill text-xl text-[#33663b]"></i
+          ></span>
+
+          <span
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
+            ><i class="ri-behance-fill text-xl text-[#33663b]"></i
+          ></span>
+
+          <span
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
+            ><i class="ri-dribbble-line text-xl text-[#33663b]"></i
+          ></span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex-1">
+        <h4 class="text-lg font-semibold text-[#33663b] mb-4">Navigation</h4>
+        <ul class="text-gray-600 space-y-3 text-sm">
+          <li>Home</li>
+          <li>Services</li>
+          <li>About</li>
+          <li>Projects</li>
+          <li>Blogs</li>
+          <li>FAQs</li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="flex-1">
+        <h4 class="text-lg font-semibold text-[#33663b] mb-4">Contact</h4>
+        <ul class="text-gray-600 space-y-3 text-sm">
+          <li>(229) 01-9747-5218</li>
+          <li>primoalapini.rezah.com</li>
+          <li>therezahdev@gmail.com</li>
+          <li>Akpakpa - Cotonou, Benin</li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="flex-1">
+        <h4 class="text-lg font-semibold text-[#33663b]">Newsletter</h4>
+        <p class="mb-4 text-gray-600">Avoir nos dernieres information</p>
+        <div
+          class="flex items-center bg-gray-100 rounded-full overflow-hidden w-full"
+        >
+          <input
+            type="email"
+            placeholder="Email address"
+            class="flex-1 px-4 py-3 bg-transparent outline-none text-sm"
+          />
+          <button
+            class="w-12 h-12 bg-[#33663b] flex items-center justify-center text-white hover:opacity-90 cursor-pointer"
+          >
+            <i class="ri-arrow-right-s-line text-[#F4B400] text-2xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separator -->
+    <div class="w-fuul bg-[#33663b] px-6 md:px-12 mt-2 py-6">
+      <div class="flex flex-col md:flex-row justify-between text-sm text-white">
+        <p>
+          Copyright © 2025 <span class="text-[#F4B400]">Rezah</span>. Tout
+          droits réservés.
+        </p>
+
+        <div class="flex gap-5 mt-3 md:mt-0">
+          <p class="cursor-pointer hover:text-[#F4B400]">
+            Termes et Conditions
+          </p>
+          <p class="cursor-pointer hover:text-[#F4B400]">
+            Politique et Confidentialité
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<style scoped>
+/* You can load Remix Icons CDN in your index.html */
+</style>

@@ -1,7 +1,28 @@
-<script setup></script>
+<script setup>
+const projects = [
+  {
+    category: "Application Web",
+    title: "Hub Liquors",
+    tag: ["Vue.js", "Laravel", "Figma"],
+    image: "/images/hub.PNG",
+  },
+  {
+    category: "Application Web",
+    title: "Cinemax",
+    tag: ["Nuxt", "Laravel"],
+    image: "/images/hub.PNG",
+  },
+  {
+    category: "Application Web",
+    title: "Eastern",
+    tag: ["Vue.js", "NodeJs", "Figma"],
+    image: "/images/hub.PNG",
+  },
+];
+</script>
 
 <template>
-  <section class="w-full py-16 px-6 md:px-12">
+  <section class="w-full bg-gray-100 py-16 px-6 md:px-12">
     <div class="flex items-center justify-between w-full mb-10">
       <div>
         <p class="text-gray-500 text-sm">
@@ -24,42 +45,48 @@
       </button>
     </div>
 
-    <div
-      class="w-full max-w-sm bg-white rounded-3xl shadow-md p-4 cursor-pointer hover:shadow-lg transition"
-    >
-      <!-- Image -->
-      <div class="w-full rounded-2xl overflow-hidden">
-        <img src="" alt="project" class="w-full h-auto object-cover" />
-      </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+      <div
+        v-for="project in projects"
+        :key="project.title"
+        class="w-full bg-white rounded-3xl shadow-md p-4 cursor-pointer hover:shadow-lg transition"
+      >
+        <!-- Image -->
+        <div class="w-full rounded-2xl overflow-hidden">
+          <img
+            :src="project.image"
+            :alt="project.title"
+            class="w-full h-56 object-cover"
+          />
+        </div>
 
-      <!-- Tags -->
-      <div class="flex flex-wrap gap-2 mt-4">
-        <span
-          class="px-3 py-1 bg-yellow-400 text-black rounded-full text-xs font-semibold"
-          >UI/UX Design</span
-        >
-        <span
-          class="px-3 py-1 bg-yellow-400 text-black rounded-full text-xs font-semibold"
-          >App Design</span
-        >
-        <span
-          class="px-3 py-1 bg-yellow-400 text-black rounded-full text-xs font-semibold"
-          >Wireframe</span
-        >
-      </div>
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span
+            v-for="tag in project.tag"
+            :key="tag"
+            class="px-3 py-1 bg-yellow-400 text-black rounded-full text-xs font-semibold"
+          >
+            {{ tag }}
+          </span>
+        </div>
 
-      
-      <!-- Title -->
-      <!-- Button bottom right -->
-      <div class="flex justify-between items-center mt-4">
-          <h3 class="mt-4 text-lg font-semibold text-gray-900 leading-tight">
-            Coffee Shop App – Coffee Ordering App Solution
+        <!-- Category -->
+        <p class="text-sm text-gray-500 mt-1">{{ project.category }}</p>
+
+        <!-- Title -->
+        <!-- Button bottom right -->
+        <div class="flex justify-between items-center mt-2">
+          <h3 class="text-lg font-semibold text-gray-900 leading-tight">
+            {{ project.title }}
           </h3>
-        <button
-          class="bg-green-700 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold hover:bg-green-600 transition"
-        >
-          →
-        </button>
+          <button
+            class="bg-[#33663b] text-[#F4B400] w-10 h-10 rounded-full text-center text-2xl font-bold hover:bg-[#F4B400] hover:text-[#33663b] transition pb-1"
+          >
+            →
+          </button>
+        </div>
       </div>
     </div>
   </section>
