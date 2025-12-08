@@ -5,7 +5,7 @@
     <div class="space-y-6">
       <!-- Badge -->
       <div class="inline-block bg-gray-100 border border-gray-300 px-3 py-1 rounded-full text-sm text-gray-700">
-        Hello There!
+        Hello There! Welcome
       </div>
 
       <!-- Title -->
@@ -17,7 +17,7 @@
 
       <!-- Subtitle -->
       <p class="text-gray-600 max-w-md">
-       Je suis un concepteur de sites web et applications, expérimenté avec plus de 3 ans d'expérience dans le domaine, et j'ai collaboré avec diverses entreprises et startups.
+       Mais vous pouvez m'appeler <span class="text-xl text-[#F4B400]">The Rezah</span>. Je suis un concepteur de sites web et applications, expérimenté avec plus de 3 ans d'expérience dans le domaine, et j'ai collaboré avec diverses entreprises et startups.
       </p>
 
       <!-- Buttons -->

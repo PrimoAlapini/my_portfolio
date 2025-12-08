@@ -1,2 +1,307 @@
 Mettre en place mon projet vue de market
 Mettre en place mon projet de portfolio
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+High5score
+Mettre en place mon site de suivi du gaming
+ligue 1 - 10 personnes
+ligue 2 - 10 personnes
+ligue 3 - 30 personnes
+
+Nom prenoms et username.
+
+nbre journées played win draw lost gs gc gd
+
+1 joueur
+nombre de matchs joués (details)
+les clubs utilisés (recap)
+
+
+Create a 1440px wide screen showing a Monthly Calendar view.
+
+Header:
+- Button ←
+- Title: “Month – March 2025”
+- Button →
+- Toggle: [Month] [Week]
+
+Main:
+- 7-columns grid
+- 5-6 rows
+- Each cell:
+   - Day number top-left
+   - Small colored event tags inside
+
+Sidebar:
+- Small event filter by category
+- Button “Add Event”
+
+
+Generate a Weekly planner screen (1440px wide).
+
+Structure:
+- Header same as Month view
+- Left column with hours (00:00 → 23:00)
+- Grid 7 vertical columns for each day
+- Events as colored blocks positioned vertically based on their time range
+- Scrollable vertical area
+
+Use auto-layout, clean spacing, soft borders.
+
+
+Create a detail page for a planning event (1440px desktop).
+
+Elements:
+- Title (big)
+- Date & time
+- Category badge and color
+- Long description
+- Buttons:
+   - Edit event
+   - Delete event
+
+Right side panel:
+- Related events
+- Category info
+
+Create a 375px mobile dashboard screen.
+
+Layout:
+- Top navbar with menu icon + title “Dashboard”
+- Card “Today’s events”
+- Mini calendar widget (compressed)
+- List of events (scrollable)
+
+Design: clean, airy, simple.
+
+Create a 375px mobile monthly calendar screen.
+
+- Sticky header:
+   - ←  March 2025  →
+- 7-column grid (tight)
+- Events shown as small colored dots
+
+Floating button (bottom right):
+   - “+” to add event
+
+Create a mobile weekly agenda view (375px).
+
+- Horizontal scroll for days
+- Vertical scroll for hours
+- Events shown as minimal blocks
+- FAB button to add event
+
+Create a mobile event detail screen (375px).
+
+- Title
+- Date + time
+- Category + color badge
+- Description
+- Buttons: Modify / Delete
+
+Simple, clean layout with vertical stacking.
+
+/* ===========================
+   Grid Garden — Solutions 1–28
+   Colle la section du niveau voulu
+   =========================== */
+
+/* -------- Level 1 -------- */
+ /* grid-column-start: 3; */
+#water {
+  grid-column-start: 3;
+}
+
+/* -------- Level 2 -------- */
+ /* grid-column-start: 5; */
+#water {
+  grid-column-start: 5;
+}
+
+/* -------- Level 3 -------- */
+ /* grid-column-end: 4; */
+#water {
+  grid-column-end: 4;
+}
+
+/* -------- Level 4 -------- */
+ /* grid-column-end: 2; */
+#water {
+  grid-column-end: 2;
+}
+
+/* -------- Level 5 -------- */
+ /* grid-column-start: 2; */
+#water {
+  grid-column-start: 2;
+}
+
+/* -------- Level 6 -------- */
+ /* grid-column: 3 / 6; */
+#water {
+  grid-column: 3 / 6;
+}
+
+/* -------- Level 7 -------- */
+ /* grid-column: 2 / 4; */
+#water {
+  grid-column: 2 / 4;
+}
+
+/* -------- Level 8 -------- */
+ /* grid-column-start: span 2; */
+#water {
+  grid-column-start: span 2;
+}
+
+/* -------- Level 9 -------- */
+ /* grid-column-start: span 3; grid-column-end: 6; */
+#water {
+  grid-column-start: span 3;
+  grid-column-end: 6;
+}
+
+/* -------- Level 10 -------- */
+ /* grid-column: 4 / 6; */
+#water {
+  grid-column: 4 / 6;
+}
+
+/* -------- Level 11 -------- */
+ /* grid-column: 2 / span 3; */
+#water {
+  grid-column: 2 / span 3;
+}
+
+/* -------- Level 12 -------- */
+ /* grid-row-start: 3; */
+#water {
+  grid-row-start: 3;
+}
+
+/* -------- Level 13 -------- */
+ /* grid-row: 3 / 6; */
+#water {
+  grid-row: 3 / 6;
+}
+
+/* -------- Level 14 -------- */
+ /* placer le poison en 5 / 2 */
+#poison {
+  grid-row: 5 / 6;
+  grid-column: 2 / 3;
+}
+
+/* -------- Level 15 -------- */
+ /* grid-row: 1 / 6; grid-column: 2 / 6; */
+#water {
+  grid-row: 1 / 6;
+  grid-column: 2 / 6;
+}
+
+/* -------- Level 16 -------- */
+ /* grid-area: 1 / 2 / 4 / 6; */
+#water {
+  grid-area: 1 / 2 / 4 / 6;
+}
+
+/* -------- Level 17 -------- */
+ /* deux zones d'eau (water-1 et water-2) */
+#water-1 {
+  grid-area: 1 / 4 / 6 / 5;
+}
+#water-2 {
+  grid-area: 2 / 3 / 5 / 6;
+}
+
+/* -------- Level 18 -------- */
+ /* réordonner (order) pour que .water passe avant #poison */
+.water {
+  order: 0;
+}
+#poison {
+  order: 1;
+}
+
+/* -------- Level 19 -------- */
+ /* utiliser order pour que le poison soit avant (ordre négatif) */
+.water {
+  order: 0;
+}
+.poison {
+  order: -1;
+}
+
+/* -------- Level 20 -------- */
+ /* une colonne (50%) et placer l'eau en haut */
+#garden {
+  grid-template-columns: 50%;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+}
+#water {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* -------- Level 21 -------- */
+ /* repeat(8, 12.5%) pour 8 colonnes égales */
+#garden {
+  grid-template-columns: repeat(8, 12.5%);
+  grid-template-rows: 20% 20% 20% 20% 20%;
+}
+#water {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* -------- Level 22 -------- */
+ /* colonnes mixant unités : 100px 3em 40% */
+#garden {
+  grid-template-columns: 100px 3em 40%;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+}
+
+/* -------- Level 23 -------- */
+ /* utiliser fractions : 1fr 5fr */
+#garden {
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+}
+
+/* -------- Level 24 -------- */
+ /* 50px | 1fr | 1fr | 1fr | 50px et remplir la colonne 1 */
+#garden {
+  grid-template-columns: 50px 1fr 1fr 1fr 50px;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+}
+#water {
+  grid-area: 1 / 1 / 6 / 2;
+}
+
+/* -------- Level 25 -------- */
+ /* grid-template-columns: 75px 3fr 2fr; */
+#garden {
+  grid-template-columns: 75px 3fr 2fr;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+}
+
+/* -------- Level 26 -------- */
+ /* une combinaison repeat + track size ; exemple courant */
+#garden {
+  /* solution référencée : grid-template-rows: repeat(4,12.5px) 1fr */
+  grid-template-rows: repeat(4, 12.5px) 1fr;
+}
+
+/* -------- Level 27 -------- */
+ /* grid-template: 60% 40% / 200px; (exemple rencontré) */
+#garden {
+  grid-template: 60% 40% / 200px;
+}
+
+/* -------- Level 28 -------- */
+ /* grid-template: 1fr 50px / 1fr 4fr; (exemple rencontré) */
+#garden {
+  grid-template: 1fr 50px / 1fr 4fr;
+}

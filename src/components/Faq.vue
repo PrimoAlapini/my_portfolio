@@ -4,39 +4,39 @@ import { ref } from "vue";
 // Tableau de FAQs
 const faqs = ref([
   {
-    question: "What industries have you worked in as a product designer?",
+    question: "Dans quels secteurs avez-vous travaillé en tant que développeur web ?",
     answer:
-      "I have worked across multiple industries including tech, finance, health, and creative services.",
+      "J'ai travaillé dans de nombreux secteurs d'activité, notamment la technologie, la finance, la santé et les services créatifs.",
   },
   {
-    question: "Can I download your resume/CV for information ?",
+    question: "Puis-je télécharger votre CV pour information ?",
     answer:
-      "Certainly! You can download my resume/CV directly from my website. It provides a comprehensive overview of my education, work experience, and design achievements.",
+      "Bien sûr ! Vous pouvez télécharger mon CV directement depuis mon site web. Il présente un aperçu complet de ma formation, de mon expérience professionnelle et de mes réalisations en développement web.",
   },
   {
-    question: "Are you available for freelance design work?",
+    question: "Êtes-vous disponible pour des projets en freelance ?",
     answer:
-      "Yes, I regularly take on freelance projects depending on availability.",
+      "Oui, je réalise régulièrement des projets en freelance en fonction de mes disponibilités.",
   },
   {
-    question: "How long does a typical project take to complete?",
+    question: "Combien de temps faut-il généralement pour mener à bien un projet ?",
     answer:
-      "Project duration depends on scope, but most take between 2–6 weeks.",
+      "La durée d'un projet dépend de son envergure, mais la plupart durent entre 4 et 12 semaines.",
   },
   {
-    question: "Do you work with startups or only large companies?",
+    question: "Travaillez-vous avec des startups ou seulement avec de grandes entreprises ?",
     answer:
-      "I work with everyone — startups, agencies, and larger organizations.",
+      "Je travaille avec tout le monde : startups, agences et grandes entreprises.",
   },
   {
-    question: "What tools do you use for your design projects?",
+    question: "Quels outils utilisez-vous pour vos projets de conception ?",
     answer:
-      "Figma, Adobe XD, Illustrator, Photoshop, and Notion for project management.",
+      "J'utilise beaucoup d'outils(figma, git etc...) pour realiser mes projets et cela dépend aussi du language avec lequel je code(developpe).",
   },
 ]);
 
 // index de la FAQ ouverte
-const openIndex = ref(1); // 2ème FAQ ouverte par défaut
+const openIndex = ref(); // 2ème FAQ ouverte par défaut
 
 // toggle strict
 function toggleFAQ(index) {
@@ -52,7 +52,7 @@ function toggleFAQ(index) {
         <span class="text-[#F4B400] text-xl">~ </span> FAQs
       </p>
       <h2 class="text-3xl font-semibold text-white">
-        Questions? <span class="text-[#F4B400]">Look here.</span>
+        Questions? <span class="text-[#F4B400]">Voir ici</span>
       </h2>
     </div>
 

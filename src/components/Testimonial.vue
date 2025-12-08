@@ -4,25 +4,40 @@ import { ref } from "vue";
 const testimonials = ref([
   {
     rating: 5,
-    text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.",
+    text: "Travailler avec Rzh a été un vrai plaisir. Il a rapidement compris nos besoins et a livré un site moderne, fluide et parfaitement responsive. Son professionnalisme et sa rapidité d’exécution nous ont impressionnés.",
     name: "Pascal Abiola",
-    role: "Founder, EV Charger Station",
+    role: "Fondateur, SK Agency",
     avatar: "/avatar1.png",
   },
   {
     rating: 4,
-    text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.",
+    text: "Très bonne communication du début à la fin. Rezah a su transformer notre maquette en un site performant et pixel-perfect. Le code est propre, optimisé et facile à maintenir. Je recommande fortement.",
     name: "Alain Michel",
-    role: "CTO, Software Agency",
+    role: "Chef de projet digital",
     avatar: "/avatar2.png",
   },
   {
-    rating: 4,
-    text: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam nisi ut aliquid ex ea commodi.",
-    name: "Patrick Corradin",
-    role: "CEO, Nexa Corp",
+    rating: 5,
+    text: "Excellent développeur. Le travail est propre, structuré et très élégant. Le site reflète exactement notre identité. Il anticipe les problèmes, propose des solutions intelligentes et reste disponible même après livraison. La collaboration a été simple, efficace et agréable. Notre satisfaction est totale. Je continuerai à travailler avec lui.",
+    name: "Michelle Oladogni",
+    role: "Entrepreneur",
     avatar: "/avatar3.png",
   },
+  {
+    rating: 4,
+    text: "Rezah a totalement refait notre plateforme et l’a rendue plus rapide, plus intuitive et plus esthétique. Il propose toujours de bonnes idées et reste très professionnel. Un développeur fiable et talentueux.",
+    name: "Patrick Corradin",
+    role: "CEO, Nova Corp",
+    avatar: "/avatar3.png",
+  },
+  {
+    rating: 4,
+    text: "Nous avions un délai très court, et pourtant il a tout livré dans les temps avec une qualité incroyable. Son sens du détail et sa maîtrise des technologies web font vraiment la différence.",
+    name: "Natacha Alakè",
+    role: "Responsable Marketing",
+    avatar: "/avatar3.png",
+  },
+  
 ]);
 
 const current = ref(0);
