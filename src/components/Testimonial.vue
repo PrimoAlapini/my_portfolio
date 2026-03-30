@@ -54,7 +54,7 @@ const prev = () => {
 </script>
 
 <template>
-  <section class="w-full bg-gray-100 py-16 px-4">
+  <section id="testimonials" class="w-full bg-gray-100 py-16 px-4">
     <!-- title -->
     <div class="text-center mb-10">
       <p class="text-sm text-gray-500 tracking-wide"><span class="text-[#F4B400] text-xl">~ </span> Témoignages</p>

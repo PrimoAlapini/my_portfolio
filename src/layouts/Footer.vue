@@ -29,32 +29,32 @@
         <!-- Social icons -->
         <div class="flex items-center gap-4 mt-5">
           <span
-            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
-            ><i class="ri-facebook-fill text-xl text-[#33663b]"></i
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl hover:bg-[#33663b] hover:text-[#F4B400] cursor-pointer"
+            ><i class="ri-facebook-fill text-xl"></i
           ></span>
 
           <span
-            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
-            ><i class="ri-twitter-fill text-xl text-[#33663b]"></i
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl hover:bg-[#33663b] hover:text-[#F4B400] cursor-pointer"
+            ><i class="ri-twitter-fill text-xl"></i
           ></span>
           <span
-            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
-            ><i class="ri-instagram-line text-xl text-[#33663b]"></i
-          ></span>
-
-          <span
-            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
-            ><i class="ri-linkedin-fill text-xl text-[#33663b]"></i
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl hover:bg-[#33663b] hover:text-[#F4B400] cursor-pointer"
+            ><i class="ri-instagram-line text-xl"></i
           ></span>
 
           <span
-            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
-            ><i class="ri-behance-fill text-xl text-[#33663b]"></i
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl hover:bg-[#33663b] hover:text-[#F4B400] cursor-pointer"
+            ><i class="ri-linkedin-fill text-xl"></i
           ></span>
 
           <span
-            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl"
-            ><i class="ri-dribbble-line text-xl text-[#33663b]"></i
+            class="w-8 h-8 bg-[#F4B400]  rounded-full flex items-center justify-center text-[#33663b] hover:bg-[#33663b] hover:text-[#F4B400] font-bold text-xl cursor-pointer"
+            ><i class="ri-behance-fill text-xl"></i
+          ></span>
+
+          <span
+            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center text-[#33663b] font-bold text-xl hover:bg-[#33663b] hover:text-[#F4B400] cursor-pointer"
+            ><i class="ri-dribbble-line text-xl"></i
           ></span>
         </div>
       </div>

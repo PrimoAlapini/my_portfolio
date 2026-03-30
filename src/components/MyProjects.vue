@@ -5,6 +5,7 @@ const projects = [
     title: "Hub Liquors",
     tag: ["Vue.js", "Laravel", "Figma"],
     image: "/images/hub.PNG",
+    link: 'https://estern'
   },
   {
     category: "Application Web",
@@ -22,7 +23,7 @@ const projects = [
 </script>
 
 <template>
-  <section class="w-full bg-gray-100 py-16 px-6 md:px-12">
+  <section id="projects" class="w-full bg-gray-100 py-16 px-6 md:px-12">
     <div class="flex items-center justify-between w-full mb-10">
       <div>
         <p class="text-gray-500 text-sm">
@@ -30,11 +31,11 @@ const projects = [
         </p>
         <h2 class="text-3xl font-bold">
           Mes récents <span class="text-[#F4B400]">Projets </span>
-        </h2>
+        </h2>np
       </div>
 
-      <button
-        class="bg-[#F4B400] text-white font-semibold pr-1 rounded-full shadow hover:bg-green-700 transition flex items-center gap-2"
+      <router-link to="/projects"
+        class="bg-[#F4B400] text-white font-semibold pr-1 rounded-full shadow hover:bg-green-700 hover:text-[#F4B400] transition flex items-center gap-2"
       >
         <span class="bg-[#33663b] py-2 px-5 rounded-full">Voir tout</span>
 
@@ -42,7 +43,7 @@ const projects = [
           class="bg-white text-[#33663b] rounded-full w-6 h-6 flex items-center justify-center"
           >→</span
         >
-      </button>
+      </router-link>
     </div>
 
     
