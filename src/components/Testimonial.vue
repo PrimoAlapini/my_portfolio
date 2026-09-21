@@ -1,134 +1,145 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from 'vue'
+import { useTestimonialsStore } from '@/stores/testimonials'
 
-const testimonials = ref([
-  {
-    rating: 5,
-    text: "Travailler avec Rzh a été un vrai plaisir. Il a rapidement compris nos besoins et a livré un site moderne, fluide et parfaitement responsive. Son professionnalisme et sa rapidité d’exécution nous ont impressionnés.",
-    name: "Pascal Abiola",
-    role: "Fondateur, SK Agency",
-    avatar: "/avatar1.png",
-  },
-  {
-    rating: 4,
-    text: "Très bonne communication du début à la fin. Rezah a su transformer notre maquette en un site performant et pixel-perfect. Le code est propre, optimisé et facile à maintenir. Je recommande fortement.",
-    name: "Alain Michel",
-    role: "Chef de projet digital",
-    avatar: "/avatar2.png",
-  },
-  {
-    rating: 5,
-    text: "Excellent développeur. Le travail est propre, structuré et très élégant. Le site reflète exactement notre identité. Il anticipe les problèmes, propose des solutions intelligentes et reste disponible même après livraison. La collaboration a été simple, efficace et agréable. Notre satisfaction est totale. Je continuerai à travailler avec lui.",
-    name: "Michelle Oladogni",
-    role: "Entrepreneur",
-    avatar: "/avatar3.png",
-  },
-  {
-    rating: 4,
-    text: "Rezah a totalement refait notre plateforme et l’a rendue plus rapide, plus intuitive et plus esthétique. Il propose toujours de bonnes idées et reste très professionnel. Un développeur fiable et talentueux.",
-    name: "Patrick Corradin",
-    role: "CEO, Nova Corp",
-    avatar: "/avatar3.png",
-  },
-  {
-    rating: 4,
-    text: "Nous avions un délai très court, et pourtant il a tout livré dans les temps avec une qualité incroyable. Son sens du détail et sa maîtrise des technologies web font vraiment la différence.",
-    name: "Natacha Alakè",
-    role: "Responsable Marketing",
-    avatar: "/avatar3.png",
-  },
-  
-]);
+const store = useTestimonialsStore()
+const current = ref(0)
 
-const current = ref(0);
+onMounted(() => store.fetchVisible())
 
 const next = () => {
-  current.value = (current.value + 1) % testimonials.value.length;
-};
+  if (store.testimonials.length === 0) return
+  current.value = (current.value + 1) % store.testimonials.length
+}
 
 const prev = () => {
-  current.value =
-    (current.value - 1 + testimonials.value.length) %
-    testimonials.value.length;
-};
+  if (store.testimonials.length === 0) return
+  current.value = (current.value - 1 + store.testimonials.length) % store.testimonials.length
+}
 </script>
 
 <template>
   <section id="testimonials" class="w-full bg-gray-100 py-16 px-4">
-    <!-- title -->
+    <!-- Titre -->
     <div class="text-center mb-10">
-      <p class="text-sm text-gray-500 tracking-wide"><span class="text-[#F4B400] text-xl">~ </span> Témoignages</p>
-
+      <p class="text-sm text-gray-500 tracking-wide">
+        <span class="text-[#F4B400] text-xl">~ </span> Témoignages
+      </p>
       <h2 class="text-3xl font-bold">
         L'impact de mon travail :
         <span class="text-yellow-500">Témoignages clients</span>
       </h2>
     </div>
 
-    <!-- testimonial card -->
-    <div
-      class="max-w-4xl mx-auto bg-white shadow rounded-2xl p-8 transition-all duration-300 quote"
-    >
-      <!-- rating -->
-      <div class="flex items-center gap-2 mb-4">
-        <div class="flex text-xl">
-          <span v-for="star in 5" :key="star" :class="star <= testimonials[current].rating ? 'text-[#F4B400]' : ''">★</span>
-        </div>
-        <span class="font-semibold text-gray-700">{{testimonials[current].rating}}.0</span>
+    <!-- Chargement -->
+    <div v-if="store.loading" class="max-w-4xl mx-auto bg-white shadow rounded-2xl p-8 animate-pulse">
+      <div class="flex gap-2 mb-4">
+        <div v-for="n in 5" :key="n" class="w-6 h-6 bg-gray-200 rounded-full"></div>
       </div>
-
-      <!-- text -->
-      <p class="text-gray-600 leading-relaxed mb-6">
-        {{ testimonials[current].text }}
-      </p>
-
-      <!-- user -->
+      <div class="space-y-2 mb-6">
+        <div class="h-4 bg-gray-200 rounded w-full"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+        <div class="h-4 bg-gray-200 rounded w-4/6"></div>
+      </div>
       <div class="flex items-center gap-4">
-        <img
-          :src="testimonials[current].avatar"
-          alt=""
-          class="w-12 h-12 rounded-full object-cover"
-        />
-
-        <div>
-          <h4 class="font-semibold text-gray-800">
-            {{ testimonials[current].name }}
-          </h4>
-          <p class="text-sm text-gray-500">{{ testimonials[current].role }}</p>
+        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+        <div class="space-y-2">
+          <div class="h-4 bg-gray-200 rounded w-32"></div>
+          <div class="h-3 bg-gray-200 rounded w-24"></div>
         </div>
       </div>
     </div>
 
-    <!-- pagination buttons -->
-    <div class="flex justify-center gap-4 mt-8">
-      <!-- prev -->
-      <button
-        @click="prev"
-        class="w-10 h-10 bg-[#33663b] text-[#F4B400] flex items-center justify-center rounded-full hover:bg-[#F4B400] hover:text-[#33663b]"
-      >
-        <span class="text-2xl pb-2">‹</span>
-      </button>
+    <!-- Erreur -->
+    <p v-else-if="store.error" class="text-center text-red-500 py-8">{{ store.error }}</p>
 
-      <!-- next -->
-      <button
-        @click="next"
-        class="w-10 h-10 bg-[#F4B400] text-[#33663b] flex items-center justify-center rounded-full hover:bg-[#33663b] hover:text-[#F4B400]"
-      >
-        <span class="text-2xl pb-2">›</span>
-      </button>
-    </div>
+    <!-- Aucun témoignage -->
+    <p v-else-if="store.testimonials.length === 0" class="text-center text-gray-400 py-8">
+      Aucun témoignage à afficher pour le moment.
+    </p>
+
+    <!-- Card testimonial -->
+    <template v-else>
+      <div class="max-w-4xl mx-auto bg-white shadow rounded-2xl p-8 transition-all duration-300 quote">
+        <!-- Rating -->
+        <div class="flex items-center gap-2 mb-4">
+          <div class="flex text-xl">
+            <span
+              v-for="star in 5"
+              :key="star"
+              :class="star <= store.testimonials[current].rating ? 'text-[#F4B400]' : 'text-gray-200'"
+            >★</span>
+          </div>
+          <span class="font-semibold text-gray-700">{{ store.testimonials[current].rating }}.0</span>
+        </div>
+
+        <!-- Texte -->
+        <p class="text-gray-600 leading-relaxed mb-6">
+          {{ store.testimonials[current].content }}
+        </p>
+
+        <!-- Auteur -->
+        <div class="flex items-center gap-4">
+          <!-- Avatar avec initiale en fallback -->
+          <img
+            v-if="store.testimonials[current].avatar_url"
+            :src="store.testimonials[current].avatar_url"
+            :alt="store.testimonials[current].name"
+            class="w-12 h-12 rounded-full object-cover"
+          />
+          <div
+            v-else
+            class="w-12 h-12 rounded-full bg-[#33663b] text-white flex items-center justify-center text-lg font-bold"
+          >
+            {{ store.testimonials[current].name.charAt(0).toUpperCase() }}
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-gray-800">{{ store.testimonials[current].name }}</h4>
+            <p class="text-sm text-gray-500">{{ store.testimonials[current].role }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation + indicateurs -->
+      <div class="flex flex-col items-center gap-4 mt-8">
+        <!-- Boutons prev / next -->
+        <div class="flex gap-4">
+          <button
+            @click="prev"
+            class="w-10 h-10 bg-[#33663b] text-[#F4B400] flex items-center justify-center rounded-full hover:bg-[#F4B400] hover:text-[#33663b] transition"
+          >
+            <span class="text-2xl pb-2">‹</span>
+          </button>
+          <button
+            @click="next"
+            class="w-10 h-10 bg-[#F4B400] text-[#33663b] flex items-center justify-center rounded-full hover:bg-[#33663b] hover:text-[#F4B400] transition"
+          >
+            <span class="text-2xl pb-2">›</span>
+          </button>
+        </div>
+
+        <!-- Dots -->
+        <div class="flex gap-2">
+          <button
+            v-for="(_, i) in store.testimonials"
+            :key="i"
+            @click="current = i"
+            :class="i === current ? 'bg-[#33663b] w-5' : 'bg-gray-300 w-2'"
+            class="h-2 rounded-full transition-all duration-300"
+          ></button>
+        </div>
+      </div>
+    </template>
   </section>
 </template>
 
 <style scoped>
-.quote{
-    position: relative;
-    background-image: url("/images/quott.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: right;
+.quote {
+  position: relative;
+  background-image: url("/images/quott.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
 }
-
-
-
 </style>
