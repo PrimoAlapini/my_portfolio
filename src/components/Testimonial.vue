@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useTestimonialsStore } from '@/stores/testimonials'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const store = useTestimonialsStore()
 const current = ref(0)
+const sectionRef = ref(null)
 
 onMounted(() => store.fetchVisible())
 
@@ -16,12 +18,27 @@ const prev = () => {
   if (store.testimonials.length === 0) return
   current.value = (current.value - 1 + store.testimonials.length) % store.testimonials.length
 }
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.testimonial-header', {
+    scrollTrigger: { trigger: '.testimonial-header', start: 'top 88%', once: true },
+    opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.testimonial-card', {
+    scrollTrigger: { trigger: '.testimonial-card', start: 'top 88%', once: true },
+    opacity: 0, y: 50, scale: 0.97, duration: 0.8, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.testimonial-nav', {
+    scrollTrigger: { trigger: '.testimonial-nav', start: 'top 92%', once: true },
+    opacity: 0, y: 20, duration: 0.5, delay: 0.2, ease: 'power2.out', immediateRender: false
+  })
+}, sectionRef)
 </script>
 
 <template>
-  <section id="testimonials" class="w-full bg-gray-100 py-16 px-4">
+  <section ref="sectionRef" id="testimonials" class="w-full bg-gray-100 py-16 px-4">
     <!-- Titre -->
-    <div class="text-center mb-10">
+    <div class="testimonial-header text-center mb-10">
       <p class="text-sm text-gray-500 tracking-wide">
         <span class="text-[#F4B400] text-xl">~ </span> Témoignages
       </p>
@@ -60,7 +77,7 @@ const prev = () => {
 
     <!-- Card testimonial -->
     <template v-else>
-      <div class="max-w-4xl mx-auto bg-white shadow rounded-2xl p-8 transition-all duration-300 quote">
+      <div class="testimonial-card max-w-4xl mx-auto bg-white shadow rounded-2xl p-8 transition-all duration-300 quote">
         <!-- Rating -->
         <div class="flex items-center gap-2 mb-4">
           <div class="flex text-xl">
@@ -102,7 +119,7 @@ const prev = () => {
       </div>
 
       <!-- Navigation + indicateurs -->
-      <div class="flex flex-col items-center gap-4 mt-8">
+      <div class="testimonial-nav flex flex-col items-center gap-4 mt-8">
         <!-- Boutons prev / next -->
         <div class="flex gap-4">
           <button

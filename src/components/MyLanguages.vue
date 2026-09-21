@@ -1,14 +1,38 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useLanguagesStore } from '@/stores/languages'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const store = useLanguagesStore()
+const sectionRef = ref(null)
 
 onMounted(() => store.fetchVisible())
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.langs-header', {
+    scrollTrigger: { trigger: '.langs-header', start: 'top 88%', once: true },
+    opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', immediateRender: false
+  })
+}, sectionRef)
+
+watch(() => store.loading, (loading) => {
+  if (!loading) {
+    gsap.from('.lang-item', {
+      scrollTrigger: { trigger: '.langs-grid', start: 'top 88%', once: true },
+      opacity: 0, scale: 0, rotation: 20,
+      duration: 0.5, stagger: 0.06, ease: 'back.out(1.7)', immediateRender: false
+    })
+  }
+})
 </script>
 
 <template>
-  <section class="w-full bg-white text-center py-16 px-6">
+  <section ref="sectionRef" class="w-full bg-white text-center py-16 px-6">
+    <div class="langs-header">
     <p class="text-sm text-gray-500 mb-2">
       <span class="text-[#F4B400] text-xl">~ </span> Mes Languages
     </p>
@@ -16,6 +40,7 @@ onMounted(() => store.fetchVisible())
       <span class="text-yellow-600">Explores mes languages</span><br />
       Maitrisés et utilisés dans mes projets
     </h2>
+    </div>
 
     <!-- Chargement -->
     <div v-if="store.loading" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-8 mt-12 max-w-6xl mx-auto">
@@ -40,12 +65,12 @@ onMounted(() => store.fetchVisible())
     <!-- Liste -->
     <div
       v-else
-      class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-8 mt-12 max-w-6xl mx-auto"
+      class="langs-grid grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-8 mt-12 max-w-6xl mx-auto"
     >
       <div
         v-for="tool in store.languages"
         :key="tool.id"
-        class="flex flex-col items-center"
+        class="lang-item flex flex-col items-center"
       >
         <div class="flex flex-col items-center gap-3 bg-gray-100 p-6 rounded-full w-24 shadow-sm hover:shadow-md transition">
           <div class="w-16 h-16 flex items-center justify-center rounded-full bg-white shadow">

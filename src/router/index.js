@@ -15,6 +15,7 @@ import AdminDashboard from '@/views/admin/AdminDashboard.vue'
 import AdminProjects from '@/views/admin/AdminProjects.vue'
 import AdminLanguages from '@/views/admin/AdminLanguages.vue'
 import AdminTestimonials from '@/views/admin/AdminTestimonials.vue'
+import AdminSocialLinks from '@/views/admin/AdminSocialLinks.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -79,6 +80,11 @@ const router = createRouter({
           path: 'testimonials',
           name: 'AdminTestimonials',
           component: AdminTestimonials,
+        },
+        {
+          path: 'social-links',
+          name: 'AdminSocialLinks',
+          component: AdminSocialLinks,
         },
       ],
     },

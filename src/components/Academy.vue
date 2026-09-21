@@ -1,9 +1,33 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const sectionRef = ref(null)
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.academy-header', {
+    scrollTrigger: { trigger: '.academy-header', start: 'top 88%', once: true },
+    opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.academy-card-left', {
+    scrollTrigger: { trigger: '.academy-cards', start: 'top 82%', once: true },
+    opacity: 0, x: -100, duration: 0.8, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.academy-card-right', {
+    scrollTrigger: { trigger: '.academy-cards', start: 'top 82%', once: true },
+    opacity: 0, x: 100, duration: 0.8, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.academy-item', {
+    scrollTrigger: { trigger: '.academy-cards', start: 'top 78%', once: true },
+    opacity: 0, y: 20, duration: 0.4, stagger: 0.1, delay: 0.4, ease: 'power2.out', immediateRender: false
+  })
+}, sectionRef)
+</script>
 
 <template>
-  <section class="w-full bg-[#33663b] py-16">
+  <section ref="sectionRef" class="w-full bg-[#33663b] py-16">
     <!-- Section Title -->
-    <div class="text-center mb-10 px-4">
+    <div class="academy-header text-center mb-10 px-4">
       <p class="text-sm text-white tracking-wide"><span class="text-[#F4B400] text-xl">~ </span> Education & Travail</p>
       <h2 class="text-3xl text-white font-bold">
         Mon parcours
@@ -13,10 +37,10 @@
 
     <!-- Cards Container -->
     <div
-      class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4 md:px-0"
+      class="academy-cards max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4 md:px-0"
     >
       <!-- Education Card -->
-      <div class="bg-[#F4B400] opacity-95 rounded-xl shadow p-8">
+      <div class="academy-card-left bg-[#F4B400] opacity-95 rounded-xl shadow p-8">
         <div class="flex items-center gap-3 mb-6">
           <div
             class="w-10 h-10 bg-[#33663b] rounded-full flex items-center justify-center"
@@ -43,19 +67,19 @@
           <h3 class="text-xl  font-semibold">Education</h3>
         </div>
 
-        <div class="mb-6 border-l-4 border-[#33663b] pl-3">
+        <div class="academy-item mb-6 border-l-4 border-[#33663b] pl-3">
           <p class="text-sm text-gray-700">2024 - Now</p>
           <h4 class="font-semibold">Harmony Institute</h4>
           <p class="text-sm text-gray-600">Master Gestion Projet</p>
         </div>
 
-        <div class="mb-6 border-l-4 border-[#33663b] pl-3">
+        <div class="academy-item mb-6 border-l-4 border-[#33663b] pl-3">
           <p class="text-sm text-gray-700">2021</p>
           <h4 class="font-semibold">EPAC</h4>
           <p class="text-sm text-gray-600">Licence PSA</p>
         </div>
 
-        <div class="border-l-4 border-[#33663b] pl-3">
+        <div class="academy-item border-l-4 border-[#33663b] pl-3">
           <p class="text-sm text-gray-700">2017</p>
           <h4 class="font-semibold">La Reussite</h4>
           <p class="text-sm text-gray-600">Baccalaureat</p>
@@ -63,7 +87,7 @@
       </div>
 
       <!-- Work Experience Card -->
-      <div class="bg-[#F4B400] opacity-95 rounded-xl shadow p-8">
+      <div class="academy-card-right bg-[#F4B400] opacity-95 rounded-xl shadow p-8">
         <div class="flex items-center gap-3 mb-6">
           <div
             class="w-10 h-10 bg-[#33663b] rounded-full flex items-center justify-center"
@@ -89,19 +113,19 @@
           <h3 class="text-xl font-semibold">Work Experience</h3>
         </div>
 
-        <div class="mb-6 border-l-4 border-[#33663b] pl-3">
+        <div class="academy-item mb-6 border-l-4 border-[#33663b] pl-3">
           <p class="text-sm text-gray-700">2024 - Now</p>
           <h4 class="font-semibold">VIPP Highfive</h4>
           <p class="text-sm text-gray-600">Dev - DevOps</p>
         </div>
 
-        <div class="mb-6 border-l-4 border-[#33663b] pl-3">
+        <div class="academy-item mb-6 border-l-4 border-[#33663b] pl-3">
           <p class="text-sm text-gray-700">2022 - 2024</p>
           <h4 class="font-semibold">Self-Employed</h4>
           <p class="text-sm text-gray-600">Developpeur</p>
         </div>
 
-        <div class="border-l-4 border-[#33663b] pl-3">
+        <div class="academy-item border-l-4 border-[#33663b] pl-3">
           <p class="text-sm text-gray-700">2020 - 2022</p>
           <h4 class="font-semibold">Self-Employed</h4>
           <p class="text-sm text-gray-600">Graphiste Designer</p>

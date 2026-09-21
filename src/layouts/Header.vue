@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import gsap from 'gsap'
 
 const isOpen = ref(false);
 
@@ -10,11 +11,26 @@ const menu = [
   { name: "Projects", to: "/#projects" },
   { name: "Testimonials", to: "/#testimonials" },
 ];
+
+onMounted(() => {
+  // Header drop-in depuis le haut
+  gsap.from('.site-header', {
+    y: -80, opacity: 0, duration: 0.8, ease: 'power3.out'
+  })
+  // Nav items stagger
+  gsap.from('.nav-item', {
+    opacity: 0, y: -15, duration: 0.5, stagger: 0.08, delay: 0.5, ease: 'back.out(1.5)'
+  })
+  // CTA button
+  gsap.from('.header-cta', {
+    opacity: 0, scale: 0.8, duration: 0.5, delay: 1, ease: 'back.out(2)'
+  })
+})
 </script>
 
 <template>
   <header
-    class="w-full bg-[#33663b] py-3 px-6 rounded-full flex items-center justify-between shadow-md fixed left-1/2 -translate-x-1/2 z-50 max-w-[95%]"
+    class="site-header w-full bg-[#33663b] py-3 px-6 rounded-full flex items-center justify-between shadow-md fixed left-1/2 -translate-x-1/2 z-50 max-w-[95%]"
   >
     <!-- LOGO -->
     <router-link to="/" class="flex items-center bg-white rounded-full gap-2">
@@ -27,7 +43,7 @@ const menu = [
         <li
           v-for="item in menu"
           :key="item.name"
-          class="hover:text-yellow-400 cursor-pointer transition"
+          class="nav-item hover:text-yellow-400 cursor-pointer transition"
         >
           <router-link :to="item.to">
             {{ item.name }}
@@ -37,7 +53,7 @@ const menu = [
     </nav>
 
     <!-- BUTTON (Desktop only) -->
-      <router-link to="/contact" class="bg-white text-[#33663b] font-semibold py-2 px-5 rounded-full shadow hover:bg-gray-100 transition hidden md:block">Contact Me</router-link> 
+      <router-link to="/contact" class="header-cta bg-white text-[#33663b] font-semibold py-2 px-5 rounded-full shadow hover:bg-gray-100 transition hidden md:block">Contact Me</router-link> 
 
     <!-- HAMBURGER BUTTON (Mobile) -->
     <button

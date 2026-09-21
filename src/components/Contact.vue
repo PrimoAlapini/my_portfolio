@@ -1,8 +1,8 @@
 <template>
-  <section class="w-full py-16 px-4">
+  <section ref="sectionRef" class="w-full py-16 px-4">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
       <!-- LEFT SIDE -->
-      <div>
+      <div class="contact-left">
         <p class="text-sm text-gray-500 mb-2">
           <span class="text-[#F4B400] text-xl">~ </span> Contact Us
         </p>
@@ -22,7 +22,7 @@
         <!-- INFO LIST -->
         <div class="space-y-5">
           <!-- PHONE -->
-          <div class="flex items-center gap-4">
+          <div class="contact-info-item flex items-center gap-4">
             <div
               class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
             >
@@ -45,7 +45,7 @@
           </div>
 
           <!-- EMAIL -->
-          <div class="flex items-center gap-4">
+          <div class="contact-info-item flex items-center gap-4">
             <div
               class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
             >
@@ -69,7 +69,7 @@
           </div>
 
           <!-- WEBSITE -->
-          <div class="flex items-center gap-4">
+          <div class="contact-info-item flex items-center gap-4">
             <div
               class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
             >
@@ -90,7 +90,7 @@
           </div>
 
           <!-- ADDRESS -->
-          <div class="flex items-center gap-4">
+          <div class="contact-info-item flex items-center gap-4">
             <div
               class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
             >
@@ -115,7 +115,7 @@
       </div>
 
       <!-- RIGHT SIDE — FORM -->
-      <form class="space-y-6">
+      <form class="contact-right space-y-6">
         <!-- ROW 1 -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="flex flex-col">
@@ -217,6 +217,26 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const sectionRef = ref(null)
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.contact-left', {
+    scrollTrigger: { trigger: '.contact-left', start: 'top 82%', once: true },
+    opacity: 0, x: -70, duration: 0.9, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.contact-right', {
+    scrollTrigger: { trigger: '.contact-right', start: 'top 82%', once: true },
+    opacity: 0, x: 70, duration: 0.9, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.contact-info-item', {
+    scrollTrigger: { trigger: '.contact-left', start: 'top 78%', once: true },
+    opacity: 0, x: -30, duration: 0.5, stagger: 0.1, delay: 0.3, ease: 'power2.out', immediateRender: false
+  })
+}, sectionRef)
+</script>
 
 <style scoped></style>

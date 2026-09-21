@@ -1,18 +1,40 @@
 <script setup>
-import { onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useProjectsStore } from '@/stores/projects'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const store = useProjectsStore()
-
-// Limiter à 3 projets sur la page d'accueil
+const sectionRef = ref(null)
 const visibleProjects = computed(() => store.projects.slice(0, 3))
 
 onMounted(() => store.fetchVisible())
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.projects-header', {
+    scrollTrigger: { trigger: '.projects-header', start: 'top 88%', once: true },
+    opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', immediateRender: false
+  })
+}, sectionRef)
+
+watch(() => store.loading, (loading) => {
+  if (!loading) {
+    gsap.from('.project-card', {
+      scrollTrigger: { trigger: '.projects-grid', start: 'top 82%', once: true },
+      opacity: 0, y: 80, rotateX: 15,
+      duration: 0.7, stagger: 0.15, ease: 'power3.out',
+      transformOrigin: 'bottom center', immediateRender: false
+    })
+  }
+})
 </script>
 
 <template>
-  <section id="projects" class="w-full bg-gray-100 py-16 px-6 md:px-12">
-    <div class="flex items-center justify-between w-full mb-10">
+  <section ref="sectionRef" id="projects" class="w-full bg-gray-100 py-16 px-6 md:px-12">
+    <div class="projects-header flex items-center justify-between w-full mb-10">
       <div>
         <p class="text-gray-500 text-sm">
           <span class="text-[#F4B400] text-xl">~ </span>Mon Portfolio
@@ -53,11 +75,11 @@ onMounted(() => store.fetchVisible())
     </p>
 
     <!-- Liste -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+    <div v-else class="projects-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
       <div
         v-for="project in visibleProjects"
         :key="project.id"
-        class="w-full bg-white rounded-3xl shadow-md p-4 cursor-pointer hover:shadow-lg transition"
+        class="project-card w-full bg-white rounded-3xl shadow-md p-4 cursor-pointer hover:shadow-lg transition"
       >
         <!-- Image -->
         <div class="w-full rounded-2xl overflow-hidden">

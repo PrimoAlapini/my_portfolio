@@ -6,19 +6,26 @@ import { supabase } from '@/lib/supabase'
 const router = useRouter()
 const route = useRoute()
 const sidebarOpen = ref(false)
+const showLogoutModal = ref(false)
 
 const navItems = [
-  { label: 'Dashboard', to: '/admin', icon: '📊' },
-  { label: 'Projets', to: '/admin/projects', icon: '🗂️' },
-  { label: 'Langages', to: '/admin/languages', icon: '💻' },
-  { label: 'Témoignages', to: '/admin/testimonials', icon: '💬' },
+  { label: 'Dashboard',       to: '/admin',              icon: '📊' },
+  { label: 'Projets',         to: '/admin/projects',     icon: '🗂️' },
+  { label: 'Langages',        to: '/admin/languages',    icon: '💻' },
+  { label: 'Témoignages',     to: '/admin/testimonials', icon: '💬' },
+  { label: 'Réseaux Sociaux', to: '/admin/social-links', icon: '🔗' },
 ]
 
 function isActive(path) {
   return route.path === path
 }
 
+function confirmLogout() {
+  showLogoutModal.value = true
+}
+
 async function logout() {
+  showLogoutModal.value = false
   await supabase.auth.signOut()
   router.push('/admin/pass')
 }
@@ -66,16 +73,50 @@ async function logout() {
         </router-link>
       </nav>
 
-      <!-- Déconnexion -->
-      <div class="p-4 border-t border-white/10">
+      <!-- Déconnexion + Accéder au site -->
+      <div class="p-4 border-t border-white/10 space-y-2">
+        <a
+          href="/"
+          class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white hover:bg-white/10 transition"
+        >
+          <span>🌐</span> Accéder au site
+        </a>
         <button
-          @click="logout"
+          @click="confirmLogout"
           class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white hover:bg-white/10 transition"
         >
           <span>🚪</span> Déconnexion
         </button>
       </div>
     </aside>
+
+    <!-- ── Modale de confirmation déconnexion ── -->
+    <transition name="fade">
+      <div
+        v-if="showLogoutModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      >
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-[90%] p-6 text-center">
+          <div class="text-4xl mb-4">🚪</div>
+          <h3 class="text-xl font-bold mb-2 text-gray-800">Déconnexion</h3>
+          <p class="text-gray-500 mb-6">Êtes-vous sûr de vouloir vous déconnecter de l'espace admin ?</p>
+          <div class="flex gap-4 justify-center">
+            <button
+              @click="logout"
+              class="px-5 py-2 bg-[#33663b] text-white rounded-full hover:bg-red-600 transition font-semibold"
+            >
+              Oui, déconnecter
+            </button>
+            <button
+              @click="showLogoutModal = false"
+              class="px-5 py-2 border border-gray-300 rounded-full hover:bg-gray-100 transition"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
 
     <!-- ── Contenu principal ── -->
     <div class="flex-1 lg:ml-64 flex flex-col min-h-screen">
@@ -104,3 +145,14 @@ async function logout() {
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

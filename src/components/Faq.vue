@@ -1,53 +1,59 @@
 <script setup>
 import { ref } from "vue";
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
-// Tableau de FAQs
+const sectionRef = ref(null)
+
 const faqs = ref([
   {
     question: "Dans quels secteurs avez-vous travaillé en tant que développeur web ?",
-    answer:
-      "J'ai travaillé dans de nombreux secteurs d'activité, notamment la technologie, la finance, la santé et les services créatifs.",
+    answer: "J'ai travaillé dans de nombreux secteurs d'activité, notamment la technologie, la finance, la santé et les services créatifs.",
   },
   {
     question: "Puis-je télécharger votre CV pour information ?",
-    answer:
-      "Bien sûr ! Vous pouvez télécharger mon CV directement depuis mon site web. Il présente un aperçu complet de ma formation, de mon expérience professionnelle et de mes réalisations en développement web.",
+    answer: "Bien sûr ! Vous pouvez télécharger mon CV directement depuis mon site web. Il présente un aperçu complet de ma formation, de mon expérience professionnelle et de mes réalisations en développement web.",
   },
   {
     question: "Êtes-vous disponible pour des projets en freelance ?",
-    answer:
-      "Oui, je réalise régulièrement des projets en freelance en fonction de mes disponibilités.",
+    answer: "Oui, je réalise régulièrement des projets en freelance en fonction de mes disponibilités.",
   },
   {
     question: "Combien de temps faut-il généralement pour mener à bien un projet ?",
-    answer:
-      "La durée d'un projet dépend de son envergure, mais la plupart durent entre 4 et 12 semaines.",
+    answer: "La durée d'un projet dépend de son envergure, mais la plupart durent entre 4 et 12 semaines.",
   },
   {
     question: "Travaillez-vous avec des startups ou seulement avec de grandes entreprises ?",
-    answer:
-      "Je travaille avec tout le monde : startups, agences et grandes entreprises.",
+    answer: "Je travaille avec tout le monde : startups, agences et grandes entreprises.",
   },
   {
     question: "Quels outils utilisez-vous pour vos projets de conception ?",
-    answer:
-      "J'utilise beaucoup d'outils(figma, git etc...) pour realiser mes projets et cela dépend aussi du language avec lequel je code(developpe).",
+    answer: "J'utilise beaucoup d'outils(figma, git etc...) pour realiser mes projets et cela dépend aussi du language avec lequel je code(developpe).",
   },
 ]);
 
-// index de la FAQ ouverte
-const openIndex = ref(); // 2ème FAQ ouverte par défaut
+const openIndex = ref();
 
-// toggle strict
 function toggleFAQ(index) {
   openIndex.value = openIndex.value === index ? null : index;
 }
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.faq-header', {
+    scrollTrigger: { trigger: '.faq-header', start: 'top 88%', once: true },
+    opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.faq-item', {
+    scrollTrigger: { trigger: '.faq-list', start: 'top 88%', once: true },
+    opacity: 0, x: 60,
+    duration: 0.5, stagger: 0.1, ease: 'power3.out', immediateRender: false
+  })
+}, sectionRef)
 </script>
 
 <template>
-  <section class="w-full bg-[#33663b] py-16 px-4">
+  <section ref="sectionRef" class="w-full bg-[#33663b] py-16 px-4">
     <!-- Header -->
-    <div class="text-center mb-10">
+    <div class="faq-header text-center mb-10">
       <p class="text-white/70 tracking-wide text-sm">
         <span class="text-[#F4B400] text-xl">~ </span> FAQs
       </p>
@@ -57,12 +63,12 @@ function toggleFAQ(index) {
     </div>
 
     <!-- FAQ List -->
-    <div class="max-w-3xl mx-auto space-y-4">
+    <div class="faq-list max-w-3xl mx-auto space-y-4">
       <div
         v-for="(faq, index) in faqs"
         :key="index"
         @click="toggleFAQ(index)"
-        class="cursor-pointer transition-all duration-300 rounded-xl overflow-hidden border"
+        class="faq-item cursor-pointer transition-all duration-300 rounded-xl overflow-hidden border"
         :class="
           openIndex === index
             ? 'bg-[#F4B400] text-[#33663b] border-[#F4B400] shadow-lg'

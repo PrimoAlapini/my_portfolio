@@ -1,13 +1,27 @@
 <script setup>
-import { services } from '@/data/services.js';
-// Tableau contenant les services
+import { ref } from 'vue'
+import { services } from '@/data/services.js'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
+const sectionRef = ref(null)
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.services-header', {
+    scrollTrigger: { trigger: '.services-header', start: 'top 88%', once: true },
+    opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.service-card', {
+    scrollTrigger: { trigger: '.services-grid', start: 'top 88%', once: true },
+    opacity: 0, y: 60, scale: 0.95,
+    duration: 0.6, stagger: 0.12, ease: 'power3.out', immediateRender: false
+  })
+}, sectionRef)
 </script>
 
 <template>
-  <section id="services" class="w-full bg-gray-100 py-16 px-6 md:px-12">
+  <section ref="sectionRef" id="services" class="w-full bg-gray-100 py-16 px-6 md:px-12">
     <!-- HEADER TITRE -->
-    <div class="flex items-center justify-between w-full mb-10">
+    <div class="services-header flex items-center justify-between w-full mb-10">
       <div>
         <p class="text-gray-500 text-sm">
           <span class="text-[#F4B400] text-xl">~ </span>Services
@@ -30,11 +44,11 @@ import { services } from '@/data/services.js';
     </div>
 
     <!-- LISTE DES SERVICES -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="services-grid grid grid-cols-1 md:grid-cols-3 gap-6">
       <div
         v-for="item in services"
         :key="item.id"
-        class="bg-gray-50 p-6 rounded-2xl shadow hover:shadow-lg transition"
+        class="service-card bg-gray-50 p-6 rounded-2xl shadow hover:shadow-lg transition"
       >
         <!-- Icône -->
         <div

@@ -1,11 +1,12 @@
 <template>
   <section
+    ref="sectionRef"
     id="about"
     class="w-full bg-[#33663b] text-white flex flex-col lg:flex-row items-center justify-center p-6 lg:p-12"
   >
     <div class="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-12">
       <!-- Left: Image + Tags -->
-      <div class="relative w-full lg:w-1/2 flex justify-center mb-10 lg:mb-0">
+      <div class="about-img relative w-full lg:w-1/2 flex justify-center mb-10 lg:mb-0">
         <div
           class="bg-yellow-500 rounded-full w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 absolute"
         ></div>
@@ -18,32 +19,18 @@
         <div
           class="absolute -bottom-6 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-2 z-20 w-72"
         >
-          <span class="px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm"
-            >Coding</span
-          >
-          <span class="px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm"
-            >Mobile App</span
-          >
-          <span class="px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm"
-            >Front End</span
-          >
-          <span class="px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm"
-            >Back End</span
-          >
-          <span class="px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm"
-            >SEO</span
-          >
-          <span class="px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm"
-            >DevOps</span
-          >
-          <span class="px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm"
-            >UI/UX Design</span
-          >
+          <span class="about-tag px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm">Coding</span>
+          <span class="about-tag px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm">Mobile App</span>
+          <span class="about-tag px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm">Front End</span>
+          <span class="about-tag px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm">Back End</span>
+          <span class="about-tag px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm">SEO</span>
+          <span class="about-tag px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm">DevOps</span>
+          <span class="about-tag px-3 py-1 bg-gray-800 rounded-full text-xs sm:text-sm">UI/UX Design</span>
         </div>
       </div>
 
       <!-- Right: Text -->
-      <div class="w-full lg:w-1/2 space-y-6 text-center lg:text-left">
+      <div class="about-text w-full lg:w-1/2 space-y-6 text-center lg:text-left">
         <p class="text-sm tracking-wide opacity-80">
           <span class="text-[#F4B400] text-xl">~ </span> About Me
         </p>
@@ -118,17 +105,17 @@
 
         <!-- Stats -->
         <div
-          class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 pt-4"
+          class="about-stats flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 pt-4"
         >
-          <div class="text-center">
+          <div class="about-stat text-center">
             <p class="text-3xl text-[#F4B400] font-bold">50+</p>
             <p class="text-sm opacity-80">Projet Terminé</p>
           </div>
-          <div class="text-center">
+          <div class="about-stat text-center">
             <p class="text-3xl text-[#F4B400] font-bold">10+</p>
             <p class="text-sm opacity-80">Entreprise Couvert</p>
           </div>
-          <div class="text-center">
+          <div class="about-stat text-center">
             <p class="text-3xl text-[#F4B400] font-bold">3+</p>
             <p class="text-sm opacity-80">Années d'Expérience</p>
           </div>
@@ -199,8 +186,30 @@
 
 <script setup>
 import { ref } from "vue";
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const showModal = ref(false);
+const sectionRef = ref(null)
+
+useScrollAnimation((gsap, ScrollTrigger) => {
+  gsap.from('.about-img', {
+    scrollTrigger: { trigger: '.about-img', start: 'top 82%', once: true },
+    opacity: 0, x: -80, duration: 0.9, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.about-tag', {
+    scrollTrigger: { trigger: '.about-img', start: 'top 78%', once: true },
+    opacity: 0, scale: 0, duration: 0.4, stagger: 0.07, ease: 'back.out(2)', immediateRender: false
+  })
+  gsap.from('.about-text', {
+    scrollTrigger: { trigger: '.about-text', start: 'top 82%', once: true },
+    opacity: 0, x: 80, duration: 0.9, ease: 'power3.out', immediateRender: false
+  })
+  gsap.from('.about-stat', {
+    scrollTrigger: { trigger: '.about-stats', start: 'top 88%', once: true },
+    opacity: 0, y: 30, scale: 0.8,
+    duration: 0.5, stagger: 0.15, ease: 'back.out(1.5)', immediateRender: false
+  })
+}, sectionRef)
 </script>
 
 <style scoped>
