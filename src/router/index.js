@@ -7,6 +7,9 @@ import ContactView from '@/views/ContactView.vue'
 import ProjectsView from '@/views/ProjectsView.vue'
 import ServiceView from '@/views/ServiceView.vue'
 import ServiceDetail from '@/views/ServiceDetail.vue'
+import NotFound from '@/views/NotFound.vue'
+import TermsView from '@/views/TermsView.vue'
+import PrivacyView from '@/views/PrivacyView.vue'
 
 // ── Vues admin ──────────────────────────────────────────────────────────────
 import AdminLogin from '@/views/admin/AdminLogin.vue'
@@ -45,6 +48,16 @@ const router = createRouter({
       path: '/services/:id',
       name: 'ServiceDetail',
       component: ServiceDetail,
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: TermsView,
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: PrivacyView,
     },
 
     // ── Login admin (hors layout) ────────────────────────────────────────────
@@ -88,6 +101,13 @@ const router = createRouter({
         },
       ],
     },
+
+    // ── 404 — catch-all (doit être en dernier) ───────────────────────────────
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound,
+    },
   ],
 
   scrollBehavior(to, from, savedPosition) {
@@ -107,12 +127,14 @@ router.beforeEach(async (to) => {
     const { data } = await supabase.auth.getSession()
     const session = data.session
 
-    // Page admin protégée sans session → login
+    // Route admin protégée sans session → accueil (jamais vers /admin/pass)
     if (requiresAuth && !session) {
-      return { name: 'AdminLogin' }
+      return { name: 'home' }
     }
 
-    // Déjà connecté et tente d'aller sur /admin/pass → dashboard
+    // /admin/pass : accessible uniquement si non connecté.
+    // Si déjà connecté → dashboard. Cette route n'est jamais imposée
+    // automatiquement au visiteur non-admin.
     if (isAdminLogin && session) {
       return { name: 'AdminDashboard' }
     }

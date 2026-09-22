@@ -109,17 +109,12 @@ watch(() => store.loading, (loading) => {
           <h3 class="text-lg font-semibold text-gray-900 leading-tight">
             {{ project.title }}
           </h3>
-          <a
-            v-if="project.link"
-            :href="project.link"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="bg-[#33663b] text-[#F4B400] w-10 h-10 rounded-full text-center text-2xl font-bold hover:bg-[#F4B400] hover:text-[#33663b] transition pb-1 flex items-center justify-center"
-          >→</a>
-          <div
-            v-else
-            class="bg-[#33663b] text-[#F4B400] w-10 h-10 rounded-full text-center text-2xl font-bold pb-1 flex items-center justify-center opacity-40"
-          >→</div>
+          <component
+            :is="project.link ? 'a' : 'span'"
+            v-bind="project.link ? { href: project.link, target: '_blank', rel: 'noopener noreferrer' } : {}"
+            class="bg-[#33663b] text-[#F4B400] w-10 h-10 rounded-full text-2xl font-bold flex items-center justify-center transition"
+            :class="project.link ? 'hover:bg-[#F4B400] hover:text-[#33663b] cursor-pointer' : 'cursor-default'"
+          >→</component>
         </div>
       </div>
     </div>

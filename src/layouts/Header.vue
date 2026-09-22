@@ -17,10 +17,12 @@ onMounted(() => {
     y: -80, opacity: 0, duration: 0.8, ease: 'power3.out'
   })
   gsap.from('.nav-item', {
-    opacity: 0, y: -15, duration: 0.5, stagger: 0.08, delay: 0.5, ease: 'back.out(1.5)'
+    opacity: 0, y: -15, duration: 0.5, stagger: 0.08, delay: 0.5,
+    ease: 'back.out(1.5)', clearProps: 'opacity,transform'
   })
   gsap.from('.header-cta', {
-    opacity: 0, scale: 0.8, duration: 0.5, delay: 1, ease: 'back.out(2)'
+    opacity: 0, scale: 0.8, duration: 0.5, delay: 1,
+    ease: 'back.out(2)', clearProps: 'opacity,transform'
   })
 })
 

@@ -85,12 +85,12 @@ useScrollAnimation((gsap, ScrollTrigger) => {
       <div class="footer-col flex-1">
         <h4 class="text-lg font-semibold text-[#33663b] mb-4">Navigation</h4>
         <ul class="text-gray-600 space-y-3 text-sm">
-          <li>Home</li>
-          <li>Services</li>
-          <li>About</li>
-          <li>Projects</li>
-          <li>Blogs</li>
-          <li>FAQs</li>
+          <li><router-link to="/"             class="hover:text-[#33663b] transition">Accueil</router-link></li>
+          <li><router-link to="/services"     class="hover:text-[#33663b] transition">Services</router-link></li>
+          <li><router-link to="/#about"       class="hover:text-[#33663b] transition">À propos</router-link></li>
+          <li><router-link to="/projects"     class="hover:text-[#33663b] transition">Projets</router-link></li>
+          <li><router-link to="/#testimonials" class="hover:text-[#33663b] transition">Témoignages</router-link></li>
+          <li><router-link to="/#faq"         class="hover:text-[#33663b] transition">FAQs</router-link></li>
         </ul>
       </div>
 
@@ -135,12 +135,8 @@ useScrollAnimation((gsap, ScrollTrigger) => {
         </p>
 
         <div class="flex gap-5 mt-3 md:mt-0 items-center">
-          <p class="cursor-pointer hover:text-[#F4B400]">
-            Termes et Conditions
-          </p>
-          <p class="cursor-pointer hover:text-[#F4B400]">
-            Politique et Confidentialité
-          </p>
+          <router-link to="/terms"   class="hover:text-[#F4B400] transition">Termes et Conditions</router-link>
+          <router-link to="/privacy" class="hover:text-[#F4B400] transition">Politique et Confidentialité</router-link>
           <router-link
             v-if="isAdmin"
             to="/admin"

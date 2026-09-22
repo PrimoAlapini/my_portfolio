@@ -112,6 +112,14 @@ export const useChatStore = defineStore('chat', () => {
           ? '⏳ Trop de messages. Patientez quelques secondes.'
           : (errData.error ?? 'Une erreur est survenue. Contactez Rezah directement.')
       } else {
+        // Si la Edge Function a dû retenter, afficher "En réflexion..." le temps
+        // que les chunks arrivent (le stream est déjà en mémoire côté serveur,
+        // il arrive d'un coup — le label reste visible ~100ms mais c'est suffisant)
+        if (res.headers.get('X-Retry') === 'true') {
+          assistantMsg.content = '🔄 En réflexion...'
+          assistantMsg.retrying = true
+        }
+
         // Lecture SSE
         const reader  = res.body.getReader()
         const decoder = new TextDecoder()
@@ -131,23 +139,19 @@ export const useChatStore = defineStore('chat', () => {
             if (raw === '[DONE]') continue
             try {
               const delta = JSON.parse(raw)?.choices?.[0]?.delta?.content
-              if (delta) assistantMsg.content += delta
+              if (delta) {
+                // Premier vrai token après un retry : effacer "En réflexion..."
+                if (assistantMsg.retrying) {
+                  assistantMsg.content = ''
+                  assistantMsg.retrying = false
+                }
+                assistantMsg.content += delta
+              }
             } catch { /* ignore */ }
           }
         }
 
-        // Buffer restant
-        if (buffer.startsWith('data: ')) {
-          const raw = buffer.slice(6).trim()
-          if (raw && raw !== '[DONE]') {
-            try {
-              const delta = JSON.parse(raw)?.choices?.[0]?.delta?.content
-              if (delta) assistantMsg.content += delta
-            } catch { /* ignore */ }
-          }
-        }
-
-        if (!assistantMsg.content) {
+        if (!assistantMsg.content || assistantMsg.content === '🔄 En réflexion...') {
           assistantMsg.content = "Je n'ai pas pu générer de réponse. Contactez Rezah à therezahdev@gmail.com."
         }
       }

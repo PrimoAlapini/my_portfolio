@@ -2,12 +2,12 @@ import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 // ── Secrets ───────────────────────────────────────────────────────────────────
 // supabase secrets set GEMINI_API_KEY=AIza...
-const GEMINI_API_KEY      = Deno.env.get('GEMINI_API_KEY')!
-const SUPABASE_URL        = Deno.env.get('SUPABASE_URL')!
+const GEMINI_API_KEY       = Deno.env.get('GEMINI_API_KEY')!
+const SUPABASE_URL         = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 
 // ── Modèle ────────────────────────────────────────────────────────────────────
-const GEMINI_MODEL = 'gemini-3.8-flash'
+const GEMINI_MODEL      = 'gemini-3.8-flash'
 const GEMINI_STREAM_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${GEMINI_API_KEY}`
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
@@ -30,8 +30,6 @@ function jsonError(message: string, status = 400): Response {
 }
 
 // ── Convertir l'historique OpenAI → format Gemini ────────────────────────────
-// OpenAI : { role: 'user'|'assistant', content: string }
-// Gemini : { role: 'user'|'model', parts: [{ text: string }] }
 function toGeminiHistory(history: Array<{ role: string; content: string }>) {
   return history.map((m) => ({
     role: m.role === 'assistant' ? 'model' : 'user',
@@ -39,65 +37,63 @@ function toGeminiHistory(history: Array<{ role: string; content: string }>) {
   }))
 }
 
-// ── Transformer le stream Gemini SSE → stream SSE format OpenAI ──────────────
-// Le client (useChat.js) attend le format OpenAI : data: {"choices":[{"delta":{"content":"..."}}]}
-// On transforme à la volée pour ne pas changer le composable.
-function createTransformStream(onDone: (full: string) => void): TransformStream<Uint8Array, Uint8Array> {
+// ── Lire un stream Gemini SSE et extraire tous les tokens ─────────────────────
+// Retourne un tableau de chunks OpenAI-format prêts à être streamés + la
+// réponse complète pour le logging.
+async function readGeminiStream(
+  geminiRes: Response,
+): Promise<{ chunks: string[]; fullResponse: string }> {
+  const reader  = geminiRes.body!.getReader()
   const decoder = new TextDecoder()
-  const encoder = new TextEncoder()
-  let buffer = ''
+  let buffer       = ''
   let fullResponse = ''
+  const chunks: string[] = []
 
-  return new TransformStream({
-    transform(chunk, controller) {
-      buffer += decoder.decode(chunk, { stream: true })
-      const lines = buffer.split('\n')
-      buffer = lines.pop() ?? ''
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
 
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue
-        const raw = line.slice(6).trim()
-        if (!raw || raw === '[DONE]') continue
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split('\n')
+    buffer = lines.pop() ?? ''
 
-        try {
-          const parsed = JSON.parse(raw)
-          // Format Gemini : candidates[0].content.parts[0].text
-          const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text
-          if (text) {
-            fullResponse += text
-            // Réémettre au format OpenAI pour que le composable existant fonctionne
-            const openAiChunk = JSON.stringify({
-              choices: [{ delta: { content: text } }],
-            })
-            controller.enqueue(encoder.encode(`data: ${openAiChunk}\n\n`))
-          }
-        } catch { /* ignore lignes non-JSON */ }
-      }
-    },
-    flush(controller) {
-      // Traiter le buffer restant
-      if (buffer.startsWith('data: ')) {
-        const raw = buffer.slice(6).trim()
-        if (raw && raw !== '[DONE]') {
-          try {
-            const parsed = JSON.parse(raw)
-            const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text
-            if (text) {
-              fullResponse += text
-              const openAiChunk = JSON.stringify({
-                choices: [{ delta: { content: text } }],
-              })
-              controller.enqueue(encoder.encode(`data: ${openAiChunk}\n\n`))
-            }
-          } catch { /* ignore */ }
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue
+      const raw = line.slice(6).trim()
+      if (!raw || raw === '[DONE]') continue
+
+      try {
+        const parsed = JSON.parse(raw)
+        const text   = parsed?.candidates?.[0]?.content?.parts?.[0]?.text
+        if (text) {
+          fullResponse += text
+          chunks.push(
+            `data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}\n\n`,
+          )
         }
-      }
-      // Signal de fin
-      controller.enqueue(encoder.encode('data: [DONE]\n\n'))
-      // Callback pour logger la réponse complète
-      onDone(fullResponse)
-    },
-  })
+      } catch { /* ignore lignes non-JSON */ }
+    }
+  }
+
+  // Buffer restant
+  if (buffer.startsWith('data: ')) {
+    const raw = buffer.slice(6).trim()
+    if (raw && raw !== '[DONE]') {
+      try {
+        const parsed = JSON.parse(raw)
+        const text   = parsed?.candidates?.[0]?.content?.parts?.[0]?.text
+        if (text) {
+          fullResponse += text
+          chunks.push(
+            `data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}\n\n`,
+          )
+        }
+      } catch { /* ignore */ }
+    }
+  }
+
+  chunks.push('data: [DONE]\n\n')
+  return { chunks, fullResponse }
 }
 
 // ── Handler principal ─────────────────────────────────────────────────────────
@@ -176,7 +172,7 @@ ${contexte}
     // ── Construire les contents Gemini ────────────────────────────────────────
     const safeHistory = Array.isArray(history)
       ? history.slice(-10).filter(
-          (m) => m && typeof m.role === 'string' && typeof m.content === 'string'
+          (m) => m && typeof m.role === 'string' && typeof m.content === 'string',
         )
       : []
 
@@ -185,39 +181,69 @@ ${contexte}
       { role: 'user', parts: [{ text: message.trim() }] },
     ]
 
-    // ── Appel Gemini en streaming ─────────────────────────────────────────────
-    const geminiRes = await fetch(GEMINI_STREAM_URL, {
+    const geminiBody = JSON.stringify({
+      system_instruction: { parts: [{ text: systemInstruction }] },
+      contents,
+      generationConfig: {
+        maxOutputTokens: 600,
+        temperature: 0.7,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    })
+
+    // ── Premier appel Gemini ──────────────────────────────────────────────────
+    let geminiRes = await fetch(GEMINI_STREAM_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: systemInstruction }] },
-        contents,
-        generationConfig: {
-          maxOutputTokens: 600,
-          temperature: 0.7,
-          thinkingConfig: { thinkingBudget: 0 }, // désactiver le "thinking" pour + de rapidité
-        },
-      }),
+      body: geminiBody,
     })
 
+    // ── Retry automatique si échec ────────────────────────────────────────────
+    let isRetry = false
     if (!geminiRes.ok) {
       const errText = await geminiRes.text()
-      console.error('Gemini error:', geminiRes.status, errText)
-      return jsonError('Erreur du moteur IA. Réessaie dans quelques instants.', 502)
+      console.error('Gemini error (attempt 1):', geminiRes.status, errText)
+
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      isRetry = true
+
+      geminiRes = await fetch(GEMINI_STREAM_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: geminiBody,
+      })
+
+      if (!geminiRes.ok) {
+        const errText2 = await geminiRes.text()
+        console.error('Gemini error (attempt 2):', geminiRes.status, errText2)
+        return jsonError('Ouups! Trop de requêtes simultanées. Réessaie dans quelques instants.', 502)
+      }
     }
 
-    // ── Transform stream + log asynchrone ────────────────────────────────────
-    const transformStream = createTransformStream((fullResponse) => {
-      if (fullResponse) {
-        supabase.from('chat_logs').insert({
-          session_id: sessionId,
-          message_user: message.trim(),
-          message_bot: fullResponse,
-        }).then(() => {}).catch(() => {})
-      }
-    })
+    // ── Lire la réponse Gemini complète en mémoire ────────────────────────────
+    // Cela garantit que le logging s'effectue toujours, peu importe comment
+    // le client consomme le stream.
+    const { chunks, fullResponse } = await readGeminiStream(geminiRes)
 
-    const readable = geminiRes.body!.pipeThrough(transformStream)
+    // ── Logger dans chat_logs (fire-and-forget) ───────────────────────────────
+    if (fullResponse) {
+      supabase.from('chat_logs').insert({
+        session_id:   sessionId,
+        message_user: message.trim(),
+        message_bot:  fullResponse,
+      }).then(() => {}).catch((e) => console.error('chat_logs insert error:', e))
+    }
+
+    // ── Réémettre les chunks vers le client ───────────────────────────────────
+    const encoder = new TextEncoder()
+    const readable = new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (const chunk of chunks) {
+          controller.enqueue(encoder.encode(chunk))
+        }
+        controller.close()
+      },
+    })
 
     return new Response(readable, {
       headers: {
@@ -225,6 +251,8 @@ ${contexte}
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
         'X-Accel-Buffering': 'no',
+        // Header lu par le store pour afficher "En réflexion..." avant le stream
+        'X-Retry': isRetry ? 'true' : 'false',
       },
     })
 

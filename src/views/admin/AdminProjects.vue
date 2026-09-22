@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
 import { useProjectsStore } from '@/stores/projects'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const store = useProjectsStore()
 
@@ -200,8 +201,7 @@ onMounted(() => store.fetchAll())
             </div>
 
             <div class="flex flex-col gap-1">
-              <label class="text-xs font-medium text-gray-600">URL Image</label>
-              <input v-model="form.image_url" type="url" placeholder="https://..." class="rounded-xl bg-gray-100 px-3 py-2 text-sm outline-none" />
+              <ImageUpload v-model="form.image_url" label="Image du projet" />
             </div>
 
             <div class="flex flex-col gap-1">

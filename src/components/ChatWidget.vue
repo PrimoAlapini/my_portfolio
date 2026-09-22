@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, watch, onMounted, onUnmounted } from 'vue'
+import { ref, nextTick, watch, onMounted, onUnmounted, computed } from 'vue'
 import { useChatStore, QUICK_SUGGESTIONS } from '@/stores/chat'
 
 const store = useChatStore()
@@ -8,14 +8,26 @@ const input      = ref('')
 const messagesEl = ref(null)
 const inputEl    = ref(null)
 
+// ── Bouton scroll-to-bottom dans le chat ──────────────────────────────────────
+const showScrollDown = ref(false)
+
+function onMessagesScroll() {
+  if (!messagesEl.value) return
+  const { scrollTop, scrollHeight, clientHeight } = messagesEl.value
+  // Afficher le bouton si l'utilisateur est à plus de 100px du bas
+  showScrollDown.value = scrollHeight - scrollTop - clientHeight > 100
+}
+
 // ── Scroll automatique ────────────────────────────────────────────────────────
 async function scrollToBottom(behavior = 'smooth') {
   await nextTick()
   messagesEl.value?.scrollTo({ top: messagesEl.value.scrollHeight, behavior })
 }
 
-// Scroll à chaque nouveau token streamé
-watch(() => store.messages[store.messages.length - 1]?.content, () => scrollToBottom())
+// Scroll à chaque nouveau token streamé (seulement si déjà en bas)
+watch(() => store.messages[store.messages.length - 1]?.content, () => {
+  if (!showScrollDown.value) scrollToBottom()
+})
 // Scroll à chaque nouveau message
 watch(() => store.messages.length, () => scrollToBottom())
 
@@ -29,31 +41,54 @@ watch(() => store.isOpen, (open) => {
   }
 })
 
-// ── Badge de bienvenue (2s après le chargement) ───────────────────────────────
+// ── Détection fond vert — montée différée pour attendre le DOM des sections ──
+// ChatWidget est monté dans App.vue avant que RouterView ne rende les sections.
+// On utilise un MutationObserver pour démarrer l'IntersectionObserver dès que
+// les sections apparaissent dans le DOM.
 onMounted(() => {
   setTimeout(() => store.notifyWelcome(), 2000)
 
-  // ── IntersectionObserver : FAB blanc sur fond vert ────────────────────────
-  // On observe toutes les sections à fond vert
-  const greenEls = document.querySelectorAll([
-    '#about',
-    '.bg-\\[\\#33663b\\]',
-    '.bg-\\[\\#1a3320\\]',
-  ].join(', '))
+  let io = null
+  const visibleGreenSections = new Set()
 
-  if (greenEls.length === 0) return
+  function startObserver() {
+    const sections = document.querySelectorAll('section')
+    if (sections.length === 0) return false
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      // Le FAB est en bas à droite — rootMargin coupe le haut et le milieu
-      // pour ne tester que la zone où vit le FAB
-      store.setGreenBg(entries.some((e) => e.isIntersecting))
-    },
-    { threshold: 0.05, rootMargin: '-60% 0px 0px 0px' }
-  )
+    io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target
+          const isGreen =
+            (el.id && el.id === 'about') ||
+            getComputedStyle(el).backgroundColor === 'rgb(51, 102, 59)'
 
-  greenEls.forEach((el) => io.observe(el))
-  onUnmounted(() => io.disconnect())
+          if (isGreen) {
+            if (entry.isIntersecting) visibleGreenSections.add(el)
+            else visibleGreenSections.delete(el)
+          }
+        })
+        store.setGreenBg(visibleGreenSections.size > 0)
+      },
+      // Zone active = 25% basse de l'écran où vit le FAB
+      { rootMargin: '-75% 0px 0px 0px', threshold: 0 }
+    )
+
+    sections.forEach((el) => io.observe(el))
+    return true
+  }
+
+  // Essai immédiat (cas où les sections sont déjà là)
+  if (!startObserver()) {
+    // Sinon on attend que le DOM soit peuplé via MutationObserver
+    const mo = new MutationObserver(() => {
+      if (startObserver()) mo.disconnect()
+    })
+    mo.observe(document.body, { childList: true, subtree: true })
+    onUnmounted(() => mo.disconnect())
+  }
+
+  onUnmounted(() => { if (io) io.disconnect() })
 })
 
 // ── Envoi ─────────────────────────────────────────────────────────────────────
@@ -141,13 +176,10 @@ function md(text) {
 
         <!-- IA sparkle + message -->
         <svg v-else key="ai" viewBox="0 0 32 32" class="w-8 h-8" fill="none">
-          <!-- grande étoile sparkle -->
           <path d="M16 3C16 3 17.5 10 20 12C22.5 14 29 15.5 29 16C29 16 22.5 17.5 20 20C17.5 22 16 29 16 29C16 29 14.5 22 12 20C9.5 18 3 16.5 3 16C3 16 9.5 14.5 12 12C14.5 10 16 3 16 3Z"
             :fill="store.onGreenBg ? '#33663b' : 'white'" opacity="0.95"/>
-          <!-- petite étoile dorée -->
           <path d="M25 5C25 5 25.6 7.8 26.8 8.6C28 9.4 31 9.8 31 10C31 10.2 28 10.6 26.8 11.4C25.6 12.2 25 15 25 15C25 15 24.4 12.2 23.2 11.4C22 10.6 19 10.2 19 10C19 9.8 22 9.4 23.2 8.6C24.4 7.8 25 5 25 5Z"
             fill="#F4B400" opacity="0.9"/>
-          <!-- bulle message -->
           <rect x="11" y="13" width="10" height="7" rx="1.5"
             :fill="store.onGreenBg ? 'white' : '#33663b'" opacity="0.9"/>
           <path d="M13 19.5L11.5 22L14.5 19.5"
@@ -162,6 +194,15 @@ function md(text) {
       </transition>
     </button>
   </div>
+
+  <!-- ── Backdrop mobile (visible uniquement < lg) ────────────────────────── -->
+  <transition name="backdrop">
+    <div
+      v-if="store.isOpen"
+      class="fixed inset-0 bg-black/40 z-[9997] sm:hidden"
+      @click="store.closeChat()"
+    />
+  </transition>
 
   <!-- ── Fenêtre chat ───────────────────────────────────────────────────────── -->
   <transition name="chat-window">
@@ -198,8 +239,11 @@ function md(text) {
       </div>
 
       <!-- Messages -->
-      <div ref="messagesEl" class="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-
+      <div
+        ref="messagesEl"
+        class="flex-1 overflow-y-auto px-4 py-4 space-y-3 relative"
+        @scroll="onMessagesScroll"
+      >
         <!-- Suggestions rapides -->
         <div v-if="store.messages.length === 1" class="flex flex-wrap gap-2 mt-1">
           <button
@@ -221,7 +265,7 @@ function md(text) {
               <img src="/images/rzh-avatar-ro.png" alt="R" class="w-full h-full object-cover" onerror="this.style.display='none'"/>
             </div>
 
-            <!-- Bulle -->
+            <!-- Bulle message -->
             <div class="max-w-[82%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm"
               :class="{
                 'bg-[#33663b] text-white rounded-tr-sm': msg.role === 'user',
@@ -249,6 +293,20 @@ function md(text) {
               <span class="w-2 h-2 bg-[#33663b]/60 rounded-full animate-bounce" style="animation-delay:300ms"></span>
             </div>
           </div>
+        </transition>
+
+        <!-- ── Bouton scroll-to-bottom ── -->
+        <transition name="fade-up">
+          <button
+            v-if="showScrollDown"
+            @click="scrollToBottom()"
+            class="sticky bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1.5 bg-[#33663b] text-white text-xs font-semibold rounded-full shadow-lg hover:bg-[#29512e] transition z-10"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+            Retour en bas
+          </button>
         </transition>
       </div>
 
@@ -305,6 +363,14 @@ function md(text) {
 .msg-leave-active { transition: opacity .2s ease; }
 .msg-enter-from   { opacity:0; transform:translateY(10px); }
 .msg-leave-to     { opacity:0; }
+
+.fade-up-enter-active { transition: opacity .2s ease, transform .25s cubic-bezier(.34,1.4,.64,1); }
+.fade-up-leave-active { transition: opacity .15s ease, transform .15s ease; }
+.fade-up-enter-from, .fade-up-leave-to { opacity:0; transform:translateX(-50%) translateY(8px); }
+
+.backdrop-enter-active { transition: opacity .25s ease; }
+.backdrop-leave-active { transition: opacity .2s ease; }
+.backdrop-enter-from, .backdrop-leave-to { opacity: 0; }
 
 .chat-fab { transition: transform .3s cubic-bezier(.34,1.56,.64,1), background-color .3s ease; }
 .chat-fab:hover  { transform:scale(1.1); }

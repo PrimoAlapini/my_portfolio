@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import Footer from './layouts/Footer.vue'
 import Header from './layouts/Header.vue'
 import ChatWidget from './components/ChatWidget.vue'
+import ScrollToTop from './components/ScrollToTop.vue'
 
 const route = useRoute()
 
@@ -21,8 +22,9 @@ const isAdminRoute = computed(() => route.path.startsWith('/admin'))
     <Header />
     <RouterView />
     <Footer />
-    <!-- Chat widget flottant — affiché sur toutes les pages publiques -->
+    <!-- Widgets flottants sur toutes les pages publiques -->
     <ChatWidget />
+    <ScrollToTop />
   </template>
 </template>
 

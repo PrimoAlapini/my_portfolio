@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
 import { useLanguagesStore } from '@/stores/languages'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const store = useLanguagesStore()
 
@@ -169,10 +170,7 @@ onMounted(() => store.fetchAll())
               </div>
             </div>
 
-            <div class="flex flex-col gap-1">
-              <label class="text-xs font-medium text-gray-600">URL Icône</label>
-              <input v-model="form.icon_url" type="url" placeholder="/images/lang/vue.png ou https://..." class="rounded-xl bg-gray-100 px-3 py-2 text-sm outline-none" />
-            </div>
+            <ImageUpload v-model="form.icon_url" label="Icône du langage" />
 
             <div class="grid grid-cols-2 gap-4">
               <div class="flex flex-col gap-1">
