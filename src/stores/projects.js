@@ -61,6 +61,30 @@ export const useProjectsStore = defineStore('projects', () => {
     return data
   }
 
+  // ─── Réordonner ────────────────────────────────────────────────────────────
+  async function reorder(orderedProjects) {
+    const updates = orderedProjects.map((project, index) =>
+      supabase
+        .from('projects')
+        .update({ sort_order: index })
+        .eq('id', project.id)
+    )
+    const results = await Promise.all(updates)
+    const failed = results.find(result => result.error)
+
+    if (failed) {
+      error.value = failed.error.message
+      await fetchAll()
+      return false
+    }
+
+    projects.value = orderedProjects.map((project, index) => ({
+      ...project,
+      sort_order: index,
+    }))
+    return true
+  }
+
   // ─── Supprimer ──────────────────────────────────────────────────────────────
   async function remove(id) {
     const { error: err } = await supabase
@@ -77,5 +101,5 @@ export const useProjectsStore = defineStore('projects', () => {
     return update(id, { is_visible: !current })
   }
 
-  return { projects, loading, error, fetchVisible, fetchAll, add, update, remove, toggleVisibility }
+  return { projects, loading, error, fetchVisible, fetchAll, add, update, reorder, remove, toggleVisibility }
 })

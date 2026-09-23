@@ -9,8 +9,10 @@ const store = useProjectsStore()
 const showModal = ref(false)
 const isEditing = ref(false)
 const saving = ref(false)
+const savingOrder = ref(false)
 const confirmDeleteId = ref(null)
 const tagInput = ref('')
+const draggedProjectId = ref(null)
 
 const emptyForm = () => ({
   title: '',
@@ -82,6 +84,32 @@ async function confirmDelete() {
   confirmDeleteId.value = null
 }
 
+function startDragging(project) {
+  draggedProjectId.value = project.id
+}
+
+function stopDragging() {
+  draggedProjectId.value = null
+}
+
+async function dropProject(targetProject) {
+  const draggedId = draggedProjectId.value
+  draggedProjectId.value = null
+  if (!draggedId || draggedId === targetProject.id || savingOrder.value) return
+
+  const reordered = [...store.projects]
+  const draggedIndex = reordered.findIndex(project => project.id === draggedId)
+  const targetIndex = reordered.findIndex(project => project.id === targetProject.id)
+  if (draggedIndex === -1 || targetIndex === -1) return
+
+  const [draggedProject] = reordered.splice(draggedIndex, 1)
+  const insertionIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex
+  reordered.splice(insertionIndex, 0, draggedProject)
+  savingOrder.value = true
+  await store.reorder(reordered)
+  savingOrder.value = false
+}
+
 onMounted(() => store.fetchAll())
 </script>
 
@@ -108,12 +136,19 @@ onMounted(() => store.fetchAll())
 
     <!-- Grille projets -->
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+      <p v-if="store.projects.length > 1" class="col-span-full text-sm text-gray-500">
+        Faites glisser les projets avec la poignée pour définir leur ordre d'affichage.
+        <span v-if="savingOrder" class="text-[#33663b] font-medium">Enregistrement...</span>
+      </p>
       <div v-if="store.projects.length === 0" class="col-span-3 text-center py-10 text-gray-400">Aucun projet</div>
 
       <div
         v-for="p in store.projects"
         :key="p.id"
         class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition"
+        :class="draggedProjectId === p.id ? 'opacity-50' : ''"
+        @dragover.prevent
+        @drop.prevent="dropProject(p)"
       >
         <!-- Image -->
         <div class="w-full h-36 bg-gray-100 overflow-hidden">
@@ -127,6 +162,18 @@ onMounted(() => store.fetchAll())
         </div>
 
         <div class="p-4">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs text-gray-400">Position {{ store.projects.indexOf(p) + 1 }}</span>
+            <button
+              type="button"
+              draggable="true"
+              @dragstart="startDragging(p)"
+              @dragend="stopDragging"
+              title="Déplacer le projet"
+              aria-label="Déplacer le projet"
+              class="cursor-grab active:cursor-grabbing text-gray-400 hover:text-[#33663b] text-lg leading-none px-2"
+            >⠿</button>
+          </div>
           <!-- Tags -->
           <div class="flex flex-wrap gap-1 mb-2">
             <span

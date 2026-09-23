@@ -10,10 +10,15 @@ const selected        = ref(null)
 const replySubject    = ref('')
 const replyHTML       = ref('')
 const mailStatus      = ref(null)
+const sendingReply    = ref(false)
 const searchQuery     = ref('')
 const filterUnread    = ref(false)
 const confirmDeleteId = ref(null)
 const quillRef        = ref(null)
+const canSendReply    = computed(() => {
+  const plainText = replyHTML.value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim()
+  return Boolean(replySubject.value.trim() && plainText)
+})
 
 // ── Chargement ─────────────────────────────────────────────────────────────────
 async function fetchMessages() {
@@ -71,16 +76,24 @@ async function confirmDelete() {
   confirmDeleteId.value = null
 }
 
-// ── Envoi via mailto ───────────────────────────────────────────────────────────
-function sendReply() {
+// ── Envoi via la fonction SMTP ─────────────────────────────────────────────────
+async function sendReply() {
   const text = quillRef.value?.getText().trim()
-  if (!text) return
-  const to      = selected.value.email
-  const subject = encodeURIComponent(replySubject.value)
-  const body    = encodeURIComponent(quillRef.value.getText())
-  window.open(`mailto:${to}?subject=${subject}&body=${body}`, '_blank')
-  mailStatus.value = 'success'
-  setTimeout(() => { mailStatus.value = null }, 4000)
+  if (!selected.value || !text || !replySubject.value.trim() || sendingReply.value) return
+
+  sendingReply.value = true
+  mailStatus.value = null
+  const { error } = await supabase.functions.invoke('send-email', {
+    body: {
+      mode: 'reply',
+      to: selected.value.email,
+      recipientName: selected.value.nom,
+      subject: replySubject.value.trim(),
+      html: replyHTML.value,
+    },
+  })
+  sendingReply.value = false
+  mailStatus.value = error ? 'error' : 'success'
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -286,23 +299,26 @@ function avatarColor(nom) {
             <!-- Feedback envoi -->
             <transition name="fade">
               <p v-if="mailStatus === 'success'" class="text-xs text-green-600 bg-green-50 px-3 py-2 rounded-xl">
-                ✅ Votre client mail s'est ouvert avec la réponse prête à envoyer.
+                ✅ Votre réponse a été envoyée par email.
+              </p>
+              <p v-else-if="mailStatus === 'error'" class="text-xs text-red-600 bg-red-50 px-3 py-2 rounded-xl">
+                L’envoi a échoué. Vérifiez la configuration SMTP et réessayez.
               </p>
             </transition>
 
             <!-- Actions -->
             <div class="flex items-center gap-3">
-              <button @click="sendReply"
+              <button @click="sendReply" :disabled="sendingReply || !canSendReply"
                 class="flex items-center gap-2 px-5 py-2.5 bg-[#33663b] text-white text-sm font-semibold rounded-full hover:bg-[#29512e] transition disabled:opacity-50 disabled:cursor-not-allowed">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg v-if="sendingReply" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="9" stroke-opacity=".25"/>
+                  <path d="M21 12a9 9 0 00-9-9"/>
+                </svg>
+                <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/>
                 </svg>
-                Ouvrir dans mon client mail
+                {{ sendingReply ? 'Envoi en cours...' : 'Envoyer le mail' }}
               </button>
-              <a :href="`mailto:${selected.email}`"
-                class="text-xs text-gray-400 hover:text-[#33663b] transition underline underline-offset-2">
-                Ou écrire directement
-              </a>
             </div>
           </div>
         </template>

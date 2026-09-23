@@ -269,7 +269,7 @@ async function handleSubmit() {
   if (!validate()) return
 
   loading.value = true
-  const { error } = await supabase.from('contact_messages').insert({
+  const contact = {
     nom:     form.nom.trim(),
     email:   form.email.trim().toLowerCase(),
     phone:   form.phone.trim() || null,
@@ -277,12 +277,24 @@ async function handleSubmit() {
     budget:  form.budget  || null,
     pays:    form.pays    || null,
     message: form.message.trim(),
+  }
+
+  const { error: saveError } = await supabase.from('contact_messages').insert(contact)
+
+  if (saveError) {
+    loading.value = false
+    globalError.value = 'Une erreur est survenue. Réessayez ou contactez directement therezahdev@gmail.com'
+    return
+  }
+
+  const { error: emailError } = await supabase.functions.invoke('send-email', {
+    body: contact,
   })
 
   loading.value = false
 
-  if (error) {
-    globalError.value = 'Une erreur est survenue. Réessayez ou contactez directement therezahdev@gmail.com'
+  if (emailError) {
+    globalError.value = 'Votre message a été enregistré, mais la notification email n’a pas pu être envoyée. Réessayez plus tard.'
     return
   }
 
