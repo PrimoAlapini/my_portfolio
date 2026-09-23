@@ -85,12 +85,24 @@ useScrollAnimation((gsap, ScrollTrigger) => {
       <div class="footer-col flex-1">
         <h4 class="text-lg font-semibold text-[#33663b] mb-4">Navigation</h4>
         <ul class="text-gray-600 space-y-3 text-sm">
-          <li><router-link to="/"             class="hover:text-[#33663b] transition">Accueil</router-link></li>
-          <li><router-link to="/services"     class="hover:text-[#33663b] transition">Services</router-link></li>
-          <li><router-link to="/#about"       class="hover:text-[#33663b] transition">À propos</router-link></li>
-          <li><router-link to="/projects"     class="hover:text-[#33663b] transition">Projets</router-link></li>
-          <li><router-link to="/#testimonials" class="hover:text-[#33663b] transition">Témoignages</router-link></li>
-          <li><router-link to="/#faq"         class="hover:text-[#33663b] transition">FAQs</router-link></li>
+          <li>
+            <router-link to="/" class="footer-nav-link">Accueil</router-link>
+          </li>
+          <li>
+            <router-link to="/services" class="footer-nav-link">Services</router-link>
+          </li>
+          <li>
+            <router-link to="/#about" class="footer-nav-link">À propos</router-link>
+          </li>
+          <li>
+            <router-link to="/projects" class="footer-nav-link">Projets</router-link>
+          </li>
+          <li>
+            <router-link to="/#testimonials" class="footer-nav-link">Témoignages</router-link>
+          </li>
+          <li>
+            <router-link to="/#faq" class="footer-nav-link">FAQs</router-link>
+          </li>
         </ul>
       </div>
 
@@ -151,5 +163,30 @@ useScrollAnimation((gsap, ScrollTrigger) => {
 </template>
 
 <style scoped>
-/* You can load Remix Icons CDN in your index.html */
+.footer-nav-link {
+  position: relative;
+  display: inline-block;
+  transition: color 0.25s ease;
+  padding-bottom: 2px;
+}
+
+.footer-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1.5px;
+  background: linear-gradient(to right, #33663b, #F4B400);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+.footer-nav-link:hover {
+  color: #33663b;
+}
+
+.footer-nav-link:hover::after {
+  width: 100%;
+}
 </style>

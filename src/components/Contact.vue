@@ -1,242 +1,264 @@
 <template>
   <section ref="sectionRef" class="w-full py-16 px-4">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+
       <!-- LEFT SIDE -->
       <div class="contact-left">
         <p class="text-sm text-gray-500 mb-2">
           <span class="text-[#F4B400] text-xl">~ </span> Contact Us
         </p>
-
         <h2 class="text-4xl font-bold leading-tight mb-4">
           Parlons de <span class="text-[#F4B400]">Vos Prochains Projets</span>
         </h2>
-
         <p class="text-gray-500 max-w-md mb-8">
           Discutons de vos idées, de vos objectifs et de la manière dont je peux
           vous aider à les concrétiser. Que ce soit pour un nouveau projet, une
           refonte ou simplement un conseil professionnel, je suis disponible
-          pour vous accompagner. Écrivez-moi, et construisons ensemble quelque
-          chose d’exceptionnel.
+          pour vous accompagner.
         </p>
 
         <!-- INFO LIST -->
         <div class="space-y-5">
-          <!-- PHONE -->
           <div class="contact-info-item flex items-center gap-4">
-            <div
-              class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
-            >
-              <span class="text-[#33663b] text-xl"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  class="size-6"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </span>
+            <div class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-[#33663b]">
+                <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd"/>
+              </svg>
             </div>
             <span class="text-gray-700">(229) 01-9747-5218</span>
           </div>
 
-          <!-- EMAIL -->
           <div class="contact-info-item flex items-center gap-4">
-            <div
-              class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
-            >
-              <span class="text-[#33663b] text-xl"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  class="size-6"
-                >
-                  <path
-                    d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"
-                  />
-                  <path
-                    d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"
-                  />
-                </svg>
-              </span>
+            <div class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-[#33663b]">
+                <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"/>
+                <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"/>
+              </svg>
             </div>
             <span class="text-gray-700">therezahdev@gmail.com</span>
           </div>
 
-          <!-- WEBSITE -->
           <div class="contact-info-item flex items-center gap-4">
-            <div
-              class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
-            >
-              <span class="text-[#33663b] text-xl"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  class="size-6"
-                >
-                  <path
-                    d="M21.721 12.752a9.711 9.711 0 0 0-.945-5.003 12.754 12.754 0 0 1-4.339 2.708 18.991 18.991 0 0 1-.214 4.772 17.165 17.165 0 0 0 5.498-2.477ZM14.634 15.55a17.324 17.324 0 0 0 .332-4.647c-.952.227-1.945.347-2.966.347-1.021 0-2.014-.12-2.966-.347a17.515 17.515 0 0 0 .332 4.647 17.385 17.385 0 0 0 5.268 0ZM9.772 17.119a18.963 18.963 0 0 0 4.456 0A17.182 17.182 0 0 1 12 21.724a17.18 17.18 0 0 1-2.228-4.605ZM7.777 15.23a18.87 18.87 0 0 1-.214-4.774 12.753 12.753 0 0 1-4.34-2.708 9.711 9.711 0 0 0-.944 5.004 17.165 17.165 0 0 0 5.498 2.477ZM21.356 14.752a9.765 9.765 0 0 1-7.478 6.817 18.64 18.64 0 0 0 1.988-4.718 18.627 18.627 0 0 0 5.49-2.098ZM2.644 14.752c1.682.971 3.53 1.688 5.49 2.099a18.64 18.64 0 0 0 1.988 4.718 9.765 9.765 0 0 1-7.478-6.816ZM13.878 2.43a9.755 9.755 0 0 1 6.116 3.986 11.267 11.267 0 0 1-3.746 2.504 18.63 18.63 0 0 0-2.37-6.49ZM12 2.276a17.152 17.152 0 0 1 2.805 7.121c-.897.23-1.837.353-2.805.353-.968 0-1.908-.122-2.805-.353A17.151 17.151 0 0 1 12 2.276ZM10.122 2.43a18.629 18.629 0 0 0-2.37 6.49 11.266 11.266 0 0 1-3.746-2.504 9.754 9.754 0 0 1 6.116-3.985Z"
-                  />
-                </svg>
-              </span>
+            <div class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-[#33663b]">
+                <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>
+              </svg>
             </div>
-            <span class="text-gray-700">primoalapini.rezah.com</span>
-          </div>
-
-          <!-- ADDRESS -->
-          <div class="contact-info-item flex items-center gap-4">
-            <div
-              class="w-10 h-10 bg-[#F4B400] rounded-full flex items-center justify-center"
-            >
-              <span class="text-[#33663b] text-xl"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  class="size-6"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </span>
-            </div>
-            <span class="text-gray-700"> Akpakpa - Cotonou, Benin </span>
+            <span class="text-gray-700">Akpakpa - Cotonou, Bénin</span>
           </div>
         </div>
       </div>
 
       <!-- RIGHT SIDE — FORM -->
-      <form class="contact-right space-y-6">
-        <!-- ROW 1 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="flex flex-col">
-            <label class="text-sm font-medium mb-1"
-              >Votre Nom <span class="text-red-500 font-bold">*</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Ex. John Doe"
-              class="rounded-xl bg-gray-100 px-4 py-3 outline-none"
-            />
+      <div class="contact-right">
+        <!-- Succès -->
+        <transition name="fade">
+          <div v-if="success" class="flex flex-col items-center justify-center h-full py-16 text-center gap-4">
+            <div class="w-16 h-16 rounded-full bg-[#33663b]/10 flex items-center justify-center">
+              <svg class="w-8 h-8 text-[#33663b]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">Message envoyé !</h3>
+            <p class="text-gray-500 max-w-xs">Merci pour votre message. Je vous répondrai dans les plus brefs délais.</p>
+            <button @click="reset" class="mt-2 px-5 py-2 rounded-full border border-[#33663b] text-[#33663b] text-sm hover:bg-[#33663b] hover:text-white transition">
+              Envoyer un autre message
+            </button>
+          </div>
+        </transition>
+
+        <!-- Formulaire -->
+        <form v-if="!success" @submit.prevent="handleSubmit" class="space-y-5" novalidate>
+
+          <!-- ROW 1 : Nom + Email -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">Votre Nom <span class="text-red-500">*</span></label>
+              <input v-model="form.nom" type="text" placeholder="Ex. John Doe"
+                class="rounded-xl px-4 py-3 outline-none transition border"
+                :class="errors.nom ? 'border-red-400 bg-red-50' : 'bg-gray-100 border-transparent focus:border-[#33663b] focus:bg-white'" />
+              <span v-if="errors.nom" class="text-xs text-red-500">{{ errors.nom }}</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">Email <span class="text-red-500">*</span></label>
+              <input v-model="form.email" type="email" placeholder="example@gmail.com"
+                class="rounded-xl px-4 py-3 outline-none transition border"
+                :class="errors.email ? 'border-red-400 bg-red-50' : 'bg-gray-100 border-transparent focus:border-[#33663b] focus:bg-white'" />
+              <span v-if="errors.email" class="text-xs text-red-500">{{ errors.email }}</span>
+            </div>
           </div>
 
-          <div class="flex flex-col">
-            <label class="text-sm font-medium mb-1"
-              >Email <span class="text-red-500 font-bold">*</span></label
-            >
-            <input
-              type="email"
-              placeholder="example@gmail.com"
-              class="rounded-xl bg-gray-100 px-4 py-3 outline-none"
-            />
-          </div>
-        </div>
-
-        <!-- ROW 2 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="flex flex-col">
-            <label class="text-sm font-medium mb-1"
-              >Phone <span class="text-red-500 font-bold">*</span></label
-            >
-            <input
-              type="text"
-              placeholder="Enter Phone Number"
-              class="rounded-xl bg-gray-100 px-4 py-3 outline-none"
-            />
+          <!-- ROW 2 : Téléphone + Service -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">Téléphone</label>
+              <input v-model="form.phone" type="tel" placeholder="Ex. +229 01 00 00 00"
+                class="rounded-xl bg-gray-100 border border-transparent focus:border-[#33663b] focus:bg-white px-4 py-3 outline-none transition" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">Je suis intéressé par <span class="text-red-500">*</span></label>
+              <select v-model="form.service"
+                class="rounded-xl px-4 py-3 outline-none transition border"
+                :class="errors.service ? 'border-red-400 bg-red-50' : 'bg-gray-100 border-transparent focus:border-[#33663b] focus:bg-white'">
+                <option value="">Sélectionner un service</option>
+                <option v-for="s in services" :key="s.id" :value="s.title">{{ s.title }}</option>
+              </select>
+              <span v-if="errors.service" class="text-xs text-red-500">{{ errors.service }}</span>
+            </div>
           </div>
 
-          <div class="flex flex-col">
-            <label class="text-sm font-medium mb-1"
-              >Je suis intéressé par
-              <span class="text-red-500 font-bold">*</span></label
-            >
-            <select class="rounded-xl bg-gray-100 px-4 py-3 outline-none">
-              <option>Select</option>
-            </select>
+          <!-- ROW 3 : Budget + Pays -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">Fourchette budgétaire (EUR)</label>
+              <select v-model="form.budget"
+                class="rounded-xl bg-gray-100 border border-transparent focus:border-[#33663b] focus:bg-white px-4 py-3 outline-none transition">
+                <option value="">Sélectionner</option>
+                <option value="< 500€">Moins de 500 €</option>
+                <option value="500€ - 1000€">500 € – 1 000 €</option>
+                <option value="1000€ - 3000€">1 000 € – 3 000 €</option>
+                <option value="3000€ - 5000€">3 000 € – 5 000 €</option>
+                <option value="> 5000€">Plus de 5 000 €</option>
+                <option value="À discuter">À discuter</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">Pays <span class="text-red-500">*</span></label>
+              <select v-model="form.pays"
+                class="rounded-xl px-4 py-3 outline-none transition border"
+                :class="errors.pays ? 'border-red-400 bg-red-50' : 'bg-gray-100 border-transparent focus:border-[#33663b] focus:bg-white'">
+                <option value="">Sélectionner</option>
+                <option v-for="p in pays" :key="p" :value="p">{{ p }}</option>
+              </select>
+              <span v-if="errors.pays" class="text-xs text-red-500">{{ errors.pays }}</span>
+            </div>
           </div>
-        </div>
 
-        <!-- ROW 3 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="flex flex-col">
-            <label class="text-sm font-medium mb-1"
-              >Fourchette budgétaire (EUR)
-              <span class="text-red-500 font-bold">*</span></label
-            >
-            <select class="rounded-xl bg-gray-100 px-4 py-3 outline-none">
-              <option>Select Range</option>
-            </select>
+          <!-- Message -->
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-medium">Votre Message <span class="text-red-500">*</span></label>
+            <textarea v-model="form.message" rows="4" placeholder="Décrivez votre projet..."
+              class="rounded-xl px-4 py-3 outline-none transition border resize-none"
+              :class="errors.message ? 'border-red-400 bg-red-50' : 'bg-gray-100 border-transparent focus:border-[#33663b] focus:bg-white'"></textarea>
+            <span v-if="errors.message" class="text-xs text-red-500">{{ errors.message }}</span>
           </div>
 
-          <div class="flex flex-col">
-            <label class="text-sm font-medium mb-1"
-              >Pays <span class="text-red-500 font-bold">*</span></label
-            >
-            <select class="rounded-xl bg-gray-100 px-4 py-3 outline-none">
-              <option>Select Country</option>
-            </select>
-          </div>
-        </div>
+          <!-- Erreur globale -->
+          <p v-if="globalError" class="text-sm text-red-500 bg-red-50 px-4 py-3 rounded-xl">{{ globalError }}</p>
 
-        <!-- MESSAGE -->
-        <div class="flex flex-col">
-          <label class="text-sm font-medium mb-1"
-            >Votre Message <span class="text-red-500 font-bold">*</span></label
-          >
-          <textarea
-            rows="4"
-            placeholder="Enter here..."
-            class="rounded-xl bg-gray-100 px-4 py-3 outline-none"
-          ></textarea>
-        </div>
-
-        <!-- SUBMIT BUTTON -->
-        <button
-          type="submit"
-          class="flex items-center gap-4 mt-4 px-6 py-3 bg-[#33663b] text-white font-semibold rounded-full hover:bg-green-800 transition"
-        >
-          Envoyer
-
-          <div
-            class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center"
-          >
-            <span class="text-black text-lg">➜</span>
-          </div>
-        </button>
-      </form>
+          <!-- Submit -->
+          <button type="submit" :disabled="loading"
+            class="flex items-center gap-4 px-6 py-3 bg-[#33663b] text-white font-semibold rounded-full hover:bg-[#29512e] transition disabled:opacity-60 disabled:cursor-not-allowed">
+            <span v-if="loading">Envoi en cours…</span>
+            <span v-else>Envoyer le message</span>
+            <div class="w-8 h-8 bg-[#F4B400] rounded-full flex items-center justify-center">
+              <svg v-if="loading" class="animate-spin w-4 h-4 text-[#33663b]" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+              </svg>
+              <span v-else class="text-[#33663b] text-lg">➜</span>
+            </div>
+          </button>
+        </form>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
+import { supabase } from '@/lib/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import { services } from '@/data/services.js'
 
 const sectionRef = ref(null)
+const loading    = ref(false)
+const success    = ref(false)
+const globalError = ref('')
 
+// ── Liste des pays (focus Afrique + monde) ────────────────────────────────────
+const pays = [
+  'Bénin', 'Togo', 'Côte d\'Ivoire', 'Sénégal', 'Mali', 'Burkina Faso',
+  'Niger', 'Ghana', 'Nigeria', 'Cameroun', 'Congo', 'RDC', 'Gabon',
+  'France', 'Belgique', 'Suisse', 'Canada', 'États-Unis', 'Autre',
+]
+
+// ── Formulaire ────────────────────────────────────────────────────────────────
+const form = reactive({
+  nom: '', email: '', phone: '', service: '', budget: '', pays: '', message: '',
+})
+
+const errors = reactive({
+  nom: '', email: '', service: '', pays: '', message: '',
+})
+
+// ── Validation ────────────────────────────────────────────────────────────────
+function validate() {
+  let valid = true
+
+  errors.nom     = form.nom.trim()     ? '' : 'Le nom est requis.'
+  errors.email   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
+    ? '' : 'Email invalide.'
+  errors.service = form.service        ? '' : 'Veuillez choisir un service.'
+  errors.pays    = form.pays           ? '' : 'Veuillez sélectionner votre pays.'
+  errors.message = form.message.trim().length >= 10
+    ? '' : 'Le message doit faire au moins 10 caractères.'
+
+  valid = !Object.values(errors).some(Boolean)
+  return valid
+}
+
+// ── Envoi ─────────────────────────────────────────────────────────────────────
+async function handleSubmit() {
+  globalError.value = ''
+  if (!validate()) return
+
+  loading.value = true
+  const { error } = await supabase.from('contact_messages').insert({
+    nom:     form.nom.trim(),
+    email:   form.email.trim().toLowerCase(),
+    phone:   form.phone.trim() || null,
+    service: form.service || null,
+    budget:  form.budget  || null,
+    pays:    form.pays    || null,
+    message: form.message.trim(),
+  })
+
+  loading.value = false
+
+  if (error) {
+    globalError.value = 'Une erreur est survenue. Réessayez ou contactez directement therezahdev@gmail.com'
+    return
+  }
+
+  success.value = true
+}
+
+function reset() {
+  Object.assign(form, { nom: '', email: '', phone: '', service: '', budget: '', pays: '', message: '' })
+  Object.assign(errors, { nom: '', email: '', service: '', pays: '', message: '' })
+  globalError.value = ''
+  success.value = false
+}
+
+// ── Animations ────────────────────────────────────────────────────────────────
 useScrollAnimation((gsap, ScrollTrigger) => {
   gsap.from('.contact-left', {
     scrollTrigger: { trigger: '.contact-left', start: 'top 82%', once: true },
-    opacity: 0, x: -70, duration: 0.9, ease: 'power3.out', immediateRender: false
+    opacity: 0, x: -70, duration: 0.9, ease: 'power3.out', immediateRender: false,
   })
   gsap.from('.contact-right', {
     scrollTrigger: { trigger: '.contact-right', start: 'top 82%', once: true },
-    opacity: 0, x: 70, duration: 0.9, ease: 'power3.out', immediateRender: false
+    opacity: 0, x: 70, duration: 0.9, ease: 'power3.out', immediateRender: false,
   })
   gsap.from('.contact-info-item', {
     scrollTrigger: { trigger: '.contact-left', start: 'top 78%', once: true },
-    opacity: 0, x: -30, duration: 0.5, stagger: 0.1, delay: 0.3, ease: 'power2.out', immediateRender: false
+    opacity: 0, x: -30, duration: 0.5, stagger: 0.1, delay: 0.3, ease: 'power2.out', immediateRender: false,
   })
 }, sectionRef)
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active, .fade-leave-active { transition: opacity 0.4s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+</style>
