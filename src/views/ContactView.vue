@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     q: 'Proposez-vous des devis gratuits ?',
-    a: 'Absolument. Décrivez votre projet via le formulaire ci-dessous et je vous ferai parvenir une estimation sans engagement.',
+    a: 'Absolument. Décrivez votre projet via le formulaire ci-dessus et je vous ferai parvenir une estimation sans engagement.',
   },
 ]
 

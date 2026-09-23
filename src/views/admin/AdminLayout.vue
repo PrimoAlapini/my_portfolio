@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/lib/supabase'
 
@@ -7,13 +7,15 @@ const router = useRouter()
 const route = useRoute()
 const sidebarOpen = ref(false)
 const showLogoutModal = ref(false)
+const unreadMessages = ref(0)
 
 const navItems = [
-  { label: 'Dashboard',       to: '/admin',              icon: '📊' },
-  { label: 'Projets',         to: '/admin/projects',     icon: '🗂️' },
-  { label: 'Langages',        to: '/admin/languages',    icon: '💻' },
-  { label: 'Témoignages',     to: '/admin/testimonials', icon: '💬' },
-  { label: 'Réseaux Sociaux', to: '/admin/social-links', icon: '🔗' },
+  { label: 'Dashboard',       to: '/admin',               icon: '📊' },
+  { label: 'Messages',        to: '/admin/messages',      icon: '✉️', badge: true },
+  { label: 'Projets',         to: '/admin/projects',      icon: '🗂️' },
+  { label: 'Langages',        to: '/admin/languages',     icon: '💻' },
+  { label: 'Témoignages',     to: '/admin/testimonials',  icon: '💬' },
+  { label: 'Réseaux Sociaux', to: '/admin/social-links',  icon: '🔗' },
 ]
 
 function isActive(path) {
@@ -29,6 +31,21 @@ async function logout() {
   await supabase.auth.signOut()
   router.push('/admin/pass')
 }
+
+// ── Compter les messages non lus ──────────────────────────────────────────────
+async function fetchUnreadCount() {
+  const { count } = await supabase
+    .from('contact_messages')
+    .select('*', { count: 'exact', head: true })
+    .eq('lu', false)
+  unreadMessages.value = count ?? 0
+}
+
+onMounted(() => {
+  fetchUnreadCount()
+  // Rafraîchir toutes les 60s
+  setInterval(fetchUnreadCount, 60000)
+})
 </script>
 
 <template>
@@ -69,7 +86,17 @@ async function logout() {
           ]"
         >
           <span>{{ item.icon }}</span>
-          {{ item.label }}
+          <span class="flex-1">{{ item.label }}</span>
+          <!-- Badge non-lu -->
+          <transition name="badge">
+            <span
+              v-if="item.badge && unreadMessages > 0"
+              class="min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-bold flex items-center justify-center"
+              :class="isActive(item.to) ? 'bg-[#33663b] text-white' : 'bg-red-500 text-white'"
+            >
+              {{ unreadMessages > 99 ? '99+' : unreadMessages }}
+            </span>
+          </transition>
         </router-link>
       </nav>
 
@@ -154,5 +181,17 @@ async function logout() {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.badge-enter-active {
+  transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+.badge-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.badge-enter-from,
+.badge-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 </style>

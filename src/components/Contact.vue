@@ -92,8 +92,10 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="flex flex-col gap-1">
               <label class="text-sm font-medium">Téléphone</label>
-              <input v-model="form.phone" type="tel" placeholder="Ex. +229 01 00 00 00"
-                class="rounded-xl bg-gray-100 border border-transparent focus:border-[#33663b] focus:bg-white px-4 py-3 outline-none transition" />
+              <input v-model="form.phone" @input="sanitizePhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Ex. +229 01 00 00 00"
+                class="rounded-xl px-4 py-3 outline-none transition border"
+                :class="errors.phone ? 'border-red-400 bg-red-50' : 'bg-gray-100 border-transparent focus:border-[#33663b] focus:bg-white'" />
+              <span v-if="errors.phone" class="text-xs text-red-500">{{ errors.phone }}</span>
             </div>
             <div class="flex flex-col gap-1">
               <label class="text-sm font-medium">Je suis intéressé par <span class="text-red-500">*</span></label>
@@ -114,7 +116,11 @@
               <select v-model="form.budget"
                 class="rounded-xl bg-gray-100 border border-transparent focus:border-[#33663b] focus:bg-white px-4 py-3 outline-none transition">
                 <option value="">Sélectionner</option>
-                <option value="< 500€">Moins de 500 €</option>
+                <option value="< 50€">Moins de 50 €</option>
+                <option value="50€ - 100€">50 € – 100 €</option>
+                <option value="100€ - 200€">100 € – 200 €</option>
+                <option value="200€ - 350€">200 € – 350 €</option>
+                <option value="350€ - 500€">350 € – 500 €</option>
                 <option value="500€ - 1000€">500 € – 1 000 €</option>
                 <option value="1000€ - 3000€">1 000 € – 3 000 €</option>
                 <option value="3000€ - 5000€">3 000 € – 5 000 €</option>
@@ -176,11 +182,41 @@ const loading    = ref(false)
 const success    = ref(false)
 const globalError = ref('')
 
-// ── Liste des pays (focus Afrique + monde) ────────────────────────────────────
+// ── Liste complète des pays du monde (triée alphabétiquement) ────────────────
 const pays = [
-  'Bénin', 'Togo', 'Côte d\'Ivoire', 'Sénégal', 'Mali', 'Burkina Faso',
-  'Niger', 'Ghana', 'Nigeria', 'Cameroun', 'Congo', 'RDC', 'Gabon',
-  'France', 'Belgique', 'Suisse', 'Canada', 'États-Unis', 'Autre',
+  'Afghanistan','Afrique du Sud','Albanie','Algérie','Allemagne','Andorre',
+  'Angola','Antigua-et-Barbuda','Arabie Saoudite','Argentine','Arménie',
+  'Australie','Autriche','Azerbaïdjan','Bahamas','Bahreïn','Bangladesh',
+  'Barbade','Belgique','Belize','Bénin','Bhoutan','Biélorussie','Bolivie',
+  'Bosnie-Herzégovine','Botswana','Brésil','Brunei','Bulgarie',
+  'Burkina Faso','Burundi','Cabo Verde','Cambodge','Cameroun','Canada',
+  'Centrafrique','Chili','Chine','Chypre','Colombie','Comores','Congo',
+  'Corée du Nord','Corée du Sud','Costa Rica','Côte d\'Ivoire','Croatie',
+  'Cuba','Danemark','Djibouti','Dominique','Égypte','Émirats Arabes Unis',
+  'Équateur','Érythrée','Espagne','Estonie','Eswatini','États-Unis',
+  'Éthiopie','Fidji','Finlande','France','Gabon','Gambie','Géorgie',
+  'Ghana','Grèce','Grenade','Guatemala','Guinée','Guinée-Bissau',
+  'Guinée équatoriale','Guyana','Haïti','Honduras','Hongrie','Inde',
+  'Indonésie','Irak','Iran','Irlande','Islande','Israël','Italie',
+  'Jamaïque','Japon','Jordanie','Kazakhstan','Kenya','Kirghizistan',
+  'Kiribati','Kosovo','Koweït','Laos','Lesotho','Lettonie','Liban',
+  'Liberia','Libye','Liechtenstein','Lituanie','Luxembourg','Madagascar',
+  'Malawi','Maldives','Malaisie','Mali','Malte','Maroc','Marshall',
+  'Maurice','Mauritanie','Mexique','Micronésie','Moldavie','Monaco',
+  'Mongolie','Monténégro','Mozambique','Myanmar','Namibie','Nauru',
+  'Népal','Nicaragua','Niger','Nigeria','Norvège','Nouvelle-Zélande',
+  'Oman','Ouganda','Ouzbékistan','Pakistan','Palaos','Palestine',
+  'Panama','Papouasie-Nouvelle-Guinée','Paraguay','Pays-Bas','Pérou',
+  'Philippines','Pologne','Portugal','Qatar','RDC','République dominicaine',
+  'République tchèque','Roumanie','Royaume-Uni','Russie','Rwanda',
+  'Saint-Kitts-et-Nevis','Saint-Marin','Saint-Vincent-et-les-Grenadines',
+  'Sainte-Lucie','Salvador','Samoa','São Tomé-et-Príncipe','Sénégal',
+  'Serbie','Seychelles','Sierra Leone','Singapour','Slovaquie','Slovénie',
+  'Somalie','Soudan','Soudan du Sud','Sri Lanka','Suède','Suisse',
+  'Suriname','Syrie','Tadjikistan','Tanzanie','Tchad','Thaïlande',
+  'Timor oriental','Togo','Tonga','Trinité-et-Tobago','Tunisie',
+  'Turkménistan','Turquie','Tuvalu','Ukraine','Uruguay','Vanuatu',
+  'Vatican','Venezuela','Vietnam','Yémen','Zambie','Zimbabwe','Autre',
 ]
 
 // ── Formulaire ────────────────────────────────────────────────────────────────
@@ -189,7 +225,7 @@ const form = reactive({
 })
 
 const errors = reactive({
-  nom: '', email: '', service: '', pays: '', message: '',
+  nom: '', email: '', phone: '', service: '', pays: '', message: '',
 })
 
 // ── Validation ────────────────────────────────────────────────────────────────
@@ -199,6 +235,18 @@ function validate() {
   errors.nom     = form.nom.trim()     ? '' : 'Le nom est requis.'
   errors.email   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
     ? '' : 'Email invalide.'
+
+  // Téléphone optionnel mais validé si renseigné
+  // Accepte : +229 01 97 47 52 18 | 0022901974752 | +33612345678 etc.
+  if (form.phone.trim()) {
+    const phone = form.phone.trim()
+    const phoneDigits = phone.replace(/\D/g, '')
+    errors.phone = /^\+?[\d\s\-().]{7,20}$/.test(phone) && phoneDigits.length >= 7
+      ? '' : 'Numéro invalide (ex. +229 01 97 47 52 18).'
+  } else {
+    errors.phone = ''
+  }
+
   errors.service = form.service        ? '' : 'Veuillez choisir un service.'
   errors.pays    = form.pays           ? '' : 'Veuillez sélectionner votre pays.'
   errors.message = form.message.trim().length >= 10
@@ -206,6 +254,13 @@ function validate() {
 
   valid = !Object.values(errors).some(Boolean)
   return valid
+}
+
+function sanitizePhone(event) {
+  let value = event.target.value.replace(/[^\d\s+().-]/g, '')
+  const hasLeadingPlus = value.startsWith('+')
+  value = value.replace(/\+/g, '')
+  form.phone = (hasLeadingPlus ? '+' : '') + value
 }
 
 // ── Envoi ─────────────────────────────────────────────────────────────────────
@@ -236,7 +291,7 @@ async function handleSubmit() {
 
 function reset() {
   Object.assign(form, { nom: '', email: '', phone: '', service: '', budget: '', pays: '', message: '' })
-  Object.assign(errors, { nom: '', email: '', service: '', pays: '', message: '' })
+  Object.assign(errors, { nom: '', email: '', phone: '', service: '', pays: '', message: '' })
   globalError.value = ''
   success.value = false
 }
