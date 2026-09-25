@@ -1,10 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { services } from '@/data/services.js'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import { useSeo } from '@/composables/useSeo'
 
 const sectionRef = ref(null)
-const selected   = ref(null)  // service survolé / sélectionné pour la preview
+const selected   = ref(null)
+
+onMounted(() => useSeo({
+  title: 'Services — Développement Web, Mobile & Design',
+  description: "Découvrez les 9 services proposés par The Rezah : création de sites web, applications mobiles, API, sécurité, design graphique. Basé à Cotonou, disponible en remote.",
+  url: '/services',
+}))
 
 const cardAccents = [
   { bg: 'bg-[#33663b]',   text: 'text-white',   light: 'bg-emerald-50'  },

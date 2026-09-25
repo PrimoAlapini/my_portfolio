@@ -2,13 +2,21 @@
 import { ref, computed, onMounted } from 'vue'
 import { useProjectsStore } from '@/stores/projects'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import { useSeo } from '@/composables/useSeo'
 
 const store      = useProjectsStore()
 const sectionRef = ref(null)
 const search     = ref('')
 const activeTag  = ref('Tous')
 
-onMounted(() => store.fetchVisible())
+onMounted(() => {
+  store.fetchVisible()
+  useSeo({
+    title: 'Projets — Portfolio complet',
+    description: "Tous les projets réalisés par The Rezah : applications web, mobiles, API. Filtrez par technologie et découvrez les réalisations.",
+    url: '/projects',
+  })
+})
 
 // ── Liste de tous les tags uniques ────────────────────────────────────────────
 const allTags = computed(() => {

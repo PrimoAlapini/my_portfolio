@@ -1,3 +1,2 @@
-pour mes projets je veux ajouter un champ description nullable qui décrit brievement le projet. 
-il sera affiché sur les cards sur la vue publique ainsi que sur la vue admin.
- 
+Mets moi en place le referencement seo pour mon site. 
+Le favicon a utiliser est favsvg dans le dossier public

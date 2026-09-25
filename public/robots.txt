@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Bloquer l'espace admin
+Disallow: /admin/
+Disallow: /admin/pass
+
+Sitemap: https://therezah.dev/sitemap.xml
