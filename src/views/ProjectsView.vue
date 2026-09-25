@@ -154,9 +154,15 @@ useScrollAnimation((gsap) => {
             </div>
 
             <!-- Titre -->
-            <h3 class="font-bold text-gray-900 text-base leading-tight mb-2 group-hover:text-[#33663b] transition-colors flex-1">
+            <h3 class="font-bold text-gray-900 text-base leading-tight mb-1 group-hover:text-[#33663b] transition-colors">
               {{ project.title }}
             </h3>
+
+            <!-- Description -->
+            <p v-if="project.description" class="text-xs text-gray-500 leading-relaxed line-clamp-2 flex-1">
+              {{ project.description }}
+            </p>
+            <div v-else class="flex-1"></div>
 
             <!-- Lien -->
             <div class="mt-4 flex items-center justify-between">

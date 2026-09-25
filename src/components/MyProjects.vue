@@ -106,13 +106,18 @@ watch(() => store.loading, (loading) => {
 
         <!-- Title + bouton -->
         <div class="flex justify-between items-center mt-2">
-          <h3 class="text-lg font-semibold text-gray-900 leading-tight">
-            {{ project.title }}
-          </h3>
+          <div class="flex-1 min-w-0 pr-3">
+            <h3 class="text-lg font-semibold text-gray-900 leading-tight">
+              {{ project.title }}
+            </h3>
+            <p v-if="project.description" class="text-xs text-gray-500 mt-1 line-clamp-2">
+              {{ project.description }}
+            </p>
+          </div>
           <component
             :is="project.link ? 'a' : 'span'"
             v-bind="project.link ? { href: project.link, target: '_blank', rel: 'noopener noreferrer' } : {}"
-            class="bg-[#33663b] text-[#F4B400] w-10 h-10 rounded-full text-2xl font-bold flex items-center justify-center transition"
+            class="bg-[#33663b] text-[#F4B400] w-10 h-10 rounded-full text-2xl font-bold flex items-center justify-center transition flex-shrink-0"
             :class="project.link ? 'hover:bg-[#F4B400] hover:text-[#33663b] cursor-pointer' : 'cursor-default'"
           >→</component>
         </div>

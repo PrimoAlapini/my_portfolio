@@ -17,6 +17,7 @@ const draggedProjectId = ref(null)
 const emptyForm = () => ({
   title: '',
   category: '',
+  description: '',
   tags: [],
   image_url: '',
   link: '',
@@ -40,6 +41,7 @@ function openEdit(p) {
   Object.assign(form, {
     title: p.title,
     category: p.category,
+    description: p.description ?? '',
     tags: [...(p.tags ?? [])],
     image_url: p.image_url ?? '',
     link: p.link ?? '',
@@ -185,6 +187,7 @@ onMounted(() => store.fetchAll())
 
           <p class="text-xs text-gray-400">{{ p.category }}</p>
           <h3 class="font-semibold text-gray-800 mt-0.5">{{ p.title }}</h3>
+          <p v-if="p.description" class="text-xs text-gray-500 mt-1 line-clamp-2">{{ p.description }}</p>
 
           <!-- Actions -->
           <div class="flex items-center justify-between mt-3">
@@ -220,6 +223,17 @@ onMounted(() => store.fetchAll())
                 <label class="text-xs font-medium text-gray-600">Catégorie</label>
                 <input v-model="form.category" type="text" placeholder="Application Web" class="rounded-xl bg-gray-100 px-3 py-2 text-sm outline-none" />
               </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="flex flex-col gap-1">
+              <label class="text-xs font-medium text-gray-600">Description</label>
+              <textarea
+                v-model="form.description"
+                rows="2"
+                placeholder="Brève description du projet (optionnel)…"
+                class="rounded-xl bg-gray-100 px-3 py-2 text-sm outline-none resize-none"
+              ></textarea>
             </div>
 
             <!-- Tags -->
