@@ -1,14 +1,24 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { services } from '@/data/services.js'
+import { useSeo } from '@/composables/useSeo'
 
 const route   = useRoute()
 const service = computed(() => services.find((s) => s.id === parseInt(route.params.id)))
-
 const idx     = computed(() => services.findIndex((s) => s.id === parseInt(route.params.id)))
-const prev    = computed(() => idx.value > 0                 ? services[idx.value - 1] : null)
+const prev    = computed(() => idx.value > 0                   ? services[idx.value - 1] : null)
 const next    = computed(() => idx.value < services.length - 1 ? services[idx.value + 1] : null)
+
+// Mettre à jour les meta dès que le service change (navigation prev/next)
+watch(service, (s) => {
+  if (!s) return
+  useSeo({
+    title: `${s.title} — Service`,
+    description: s.text,
+    url: `/services/${s.id}`,
+  })
+}, { immediate: true })
 
 const cardAccents = [
   'bg-emerald-50', 'bg-yellow-50', 'bg-gray-50', 'bg-rose-50',

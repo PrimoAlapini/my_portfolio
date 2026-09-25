@@ -4,11 +4,17 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Contact from '@/components/Contact.vue'
 import { useSocialLinksStore } from '@/stores/socialLinks'
+import { useSeo } from '@/composables/useSeo'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const socialStore = useSocialLinksStore()
 onMounted(() => {
+  useSeo({
+    title: 'Contact — Parlons de votre projet',
+    description: "Contactez The Rezah pour vos projets web et mobile. Disponible à Cotonou et en remote. Réponse sous 24h.",
+    url: '/contact',
+  })
   socialStore.fetchVisible()
 
   // Hero animations
